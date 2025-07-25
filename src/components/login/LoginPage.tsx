@@ -4,6 +4,7 @@ import React, { useState, useCallback, useEffect } from "react";
 import { account, databases } from "@/lib/appwrite"; // Import Appwrite services
 import { Query } from "appwrite"; // For Appwrite database queries
 import type { Models } from "appwrite"; // Import Models to access Document type
+import { AppwriteException } from "appwrite"; // Import AppwriteException
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -49,23 +50,27 @@ export default function LoginPage({
     setShowPassword((prev) => !prev);
   }, []);
 
-  // NEW useEffect: Check for active session on component mount
+  // Check for active session on component mount
   const checkActiveSession = useCallback(async () => {
     setIsLoading(true); // Ensure loading state is active during check
     setErrorMessage(null); // Clear any previous errors
     try {
-      const currentAppwriteUser = await account.get(); // Get the current active session/user data
+      // Attempt to get the current authenticated user session from Appwrite
+      const currentAppwriteUser = await account.get(); // Throws if no session or insufficient permissions
       console.log(
         "LoginPage: Existing session found for Appwrite User ID:",
         currentAppwriteUser.$id
       );
 
-      // --- CRITICAL FIX 1: Add collectionId to listDocuments ---
+      // If a session is active, fetch the corresponding user profile from your database
       const userProfileResponse =
         await databases.listDocuments<AppwriteProfile>(
           import.meta.env.PUBLIC_APPWRITE_DATABASE_ID,
-          import.meta.env.PUBLIC_APPWRITE_USER_PROFILES_COLLECTION_ID, // <--- ADDED collectionId HERE
-          [Query.equal("userId", currentAppwriteUser.$id), Query.limit(1)]
+          import.meta.env.PUBLIC_APPWRITE_USER_PROFILES_COLLECTION_ID,
+          [
+            Query.equal("userId", currentAppwriteUser.$id), // Appwrite User ID is currentSession.$id
+            Query.limit(1), // Expect only one profile
+          ]
         );
 
       if (userProfileResponse.documents.length === 0) {
@@ -73,7 +78,7 @@ export default function LoginPage({
           "LoginPage: User profile document not found for active session ID:",
           currentAppwriteUser.$id
         );
-        await account.deleteSession("current");
+        await account.deleteSession("current"); // Log out from Appwrite if profile is missing
         setErrorMessage(
           "Your user profile is missing or inaccessible. Please contact support."
         );
@@ -81,9 +86,9 @@ export default function LoginPage({
         return;
       }
 
-      const profileData = userProfileResponse.documents[0];
+      const profileData = userProfileResponse.documents[0]; // Get the found profile document
       const userRole = profileData.role;
-      const firmId = profileData.firmId;
+      const firmId = profileData.firmId; // Get firmId from the profile
 
       console.log(
         "LoginPage: Session active, fetched profile role:",
@@ -92,30 +97,50 @@ export default function LoginPage({
         firmId
       );
 
-      let redirectPath = "/dashboard";
+      // Determine redirection path based on role
+      let redirectPath = "/dashboard"; // Default generic dashboard
       switch (userRole) {
         case "super_admin":
-          redirectPath = "/super-admin/firm-management";
+          redirectPath = "/dashboard/super-admin";
           break;
         case "firm_admin":
-          redirectPath = "/locations";
+          redirectPath = "/dashboard/firm-admin"; // Location management for firm admins
           break;
         default:
-          redirectPath = "/dashboard";
+          redirectPath = "/dashboard"; // For other roles like 'employee'
           break;
       }
+
       console.log("LoginPage: Redirecting to:", redirectPath);
-      window.location.href = redirectPath;
-      return;
+      window.location.href = redirectPath; // Redirect to appropriate dashboard
+      return; // Stop further execution
     } catch (err: any) {
-      console.log(
-        "LoginPage: No active session or session invalid:",
-        err.message
-      );
+      // This catch block will execute if there is NO active session or if account.get() fails for any reason
+      // If it's an AppwriteException with code 401 and message "User (role: guests) missing scope (account)",
+      // it means no one is logged in, which is expected.
+      // For other errors, log them.
+      if (
+        err instanceof AppwriteException &&
+        err.code === 401 &&
+        err.message.includes("missing scope (account)")
+      ) {
+        console.log(
+          "LoginPage: No active session (expected for guests). Displaying login form."
+        );
+      } else {
+        console.error(
+          "LoginPage: Unexpected error during initial session check:",
+          err
+        );
+        setErrorMessage(
+          "An error occurred during session check. Please try again."
+        );
+      }
+      // Do NOT set errorMessage here, just allow the login form to show if no redirect happened.
     } finally {
-      setIsLoading(false);
+      setIsLoading(false); // Stop loading, show the form if no redirect happened
     }
-  }, [databases, onRedirect]); // Added databases to dependencies for useCallback
+  }, [databases, onRedirect]); // Add databases to dependencies for useCallback
 
   useEffect(() => {
     checkActiveSession();
@@ -123,10 +148,11 @@ export default function LoginPage({
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    setErrorMessage(null);
-    setIsLoading(true);
+    setErrorMessage(null); // Clear previous errors
+    setIsLoading(true); // Indicate login submission is in progress
 
     try {
+      // 1. Authenticate with Appwrite (create email/password session)
       const session = await account.createEmailPasswordSession(email, password);
 
       console.log(
@@ -134,11 +160,10 @@ export default function LoginPage({
         session.userId
       );
 
-      // --- CRITICAL FIX 2: Add collectionId to listDocuments ---
       const userProfileResponse =
         await databases.listDocuments<AppwriteProfile>(
           import.meta.env.PUBLIC_APPWRITE_DATABASE_ID,
-          import.meta.env.PUBLIC_APPWRITE_USER_PROFILES_COLLECTION_ID, // <--- ADDED collectionId HERE
+          import.meta.env.PUBLIC_APPWRITE_USER_PROFILES_COLLECTION_ID,
           [Query.equal("userId", session.userId), Query.limit(1)]
         );
 
@@ -170,10 +195,10 @@ export default function LoginPage({
       let redirectPath = "/dashboard";
       switch (userRole) {
         case "super_admin":
-          redirectPath = "/dashboard/super-admin";
+          redirectPath = "/super-admin/firm-management";
           break;
         case "firm_admin":
-          redirectPath = "/dashboard/firm-admin";
+          redirectPath = "/locations";
           break;
         default:
           redirectPath = "/dashboard";
@@ -191,26 +216,31 @@ export default function LoginPage({
         err
       );
       let userFacingError = "Login failed. Please check your credentials.";
-      if (
-        err.code === 400 &&
-        err.message.includes(
-          "Creation of a session is prohibited when a session is active"
-        )
-      ) {
-        userFacingError = "You are already logged in. Redirecting...";
-        console.warn(
-          "LoginPage: Attempted login while session active. Re-triggering session check."
-        );
-        checkActiveSession(); // Re-trigger the session check and redirect
-      } else if (err.code === 401) {
-        userFacingError = "Invalid email or password.";
-      } else if (err.code === 429) {
-        userFacingError = "Too many login attempts. Please try again later.";
+      if (err instanceof AppwriteException) {
+        // Check if it's an AppwriteException
+        if (
+          err.code === 400 &&
+          err.message.includes(
+            "Creation of a session is prohibited when a session is active"
+          )
+        ) {
+          userFacingError = "You are already logged in. Redirecting...";
+          console.warn(
+            "LoginPage: Attempted login while session active. Re-triggering session check."
+          );
+          checkActiveSession(); // Re-trigger the session check and redirect if session is truly active
+        } else if (err.code === 401) {
+          userFacingError = "Invalid email or password.";
+        } else if (err.code === 429) {
+          userFacingError = "Too many login attempts. Please try again later.";
+        } else {
+          userFacingError = err.message; // Use Appwrite's specific message
+        }
       } else if (err.message.includes("Network request failed")) {
         userFacingError =
           "Network error. Please check your internet connection.";
       } else {
-        userFacingError = err.message || "An unexpected error occurred.";
+        userFacingError = "An unexpected error occurred."; // Generic fallback
       }
       setErrorMessage(userFacingError);
       onLoginError?.(userFacingError);
