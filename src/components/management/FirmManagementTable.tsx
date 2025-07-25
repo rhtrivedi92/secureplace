@@ -537,13 +537,6 @@ export default function FirmManagementTable({}: FirmManagementTableProps) {
                   : "Create a new firm for your organization. Fill in the details below."}
               </DialogDescription>
             </div>
-            <button
-              onClick={() => setIsDialogOpen(false)}
-              className="dialog-close-button"
-              aria-label="Close"
-            >
-              X
-            </button>
           </DialogHeader>
           <form onSubmit={handleSaveFirm} className="dialog-form">
             <div className="form-group">
