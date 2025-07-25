@@ -1,0 +1,217 @@
+---
+// Navbar.astro
+import LogoutButton from "./auth/LogoutButton.tsx"; // Ensure correct path if needed
+import {
+  LayoutDashboard,
+  User,
+  Building,
+  MapPin,
+  BellRing,
+  OctagonAlert,
+  Settings,
+  ShieldUser,
+} from "lucide-react";
+
+const currentPath = Astro.url.pathname;
+
+// Define your menu items with their href paths and new Lucide icon names
+const menuItems = [
+  { name: "Dashboard", href: "/home", icon: LayoutDashboard }, // Use the imported Lucide component directly
+  { name: "My Account", href: "/my-account", icon: User },
+  { name: "Firms", href: "/super-admin/firm-management", icon: Building },
+  {
+    name: "Firm Admins",
+    href: "/super-admin/firm-admin-management",
+    icon: ShieldUser,
+  },
+  { name: "Locations", href: "/locations", icon: MapPin },
+  { name: "Employees", href: "/employees", icon: User }, // Re-using User icon for Employees
+  { name: "Alert Logs", href: "/alert-logs", icon: BellRing },
+  {
+    name: "Drill Alert Log",
+    href: "/drill-alert-log",
+    icon: OctagonAlert, // Using Drill icon
+  },
+];
+
+const helpMenuItems = [
+  { name: "Settings", href: "/settings", icon: Settings }, // Using Settings icon
+];
+
+// Helper function to determine if a link is active
+const isActive = (href: string) => {
+  if (href === "/home") {
+    return currentPath === href || currentPath === "/";
+  }
+  return currentPath.startsWith(href);
+};
+---
+
+<div class="admin-menu">
+  <div class="logo crancy-sidebar-padding pd-right-0">
+    <a class="crancy-logo" href="/home">
+      <img
+        class="crancy-logo__main"
+        src="/img/sp-logo.png"
+        alt="Secure Place Logo"
+      />
+      <img
+        class="crancy-logo__main--dark"
+        src="/img/sp-logo.png"
+        alt="Secure Place Logo"
+      />
+      <img
+        class="crancy-logo__main--small"
+        src="/img/sp-icon.png"
+        alt="Secure Place Icon"
+      />
+      <img
+        class="crancy-logo__main--small--dark"
+        src="/img/logo-icon-dark.html"
+        alt="Secure Place Icon Dark"
+      />
+    </a>
+    <div id="crancy__sicon" class="crancy__sicon close-icon">
+      <img src="/img/arrow-icon.svg" alt="Toggle Sidebar" />
+    </div>
+  </div>
+
+  <div class="admin-menu__one crancy-sidebar-padding mg-top-20">
+    <h4 class="admin-menu__title">Menu</h4>
+    <div class="menu-bar">
+      <ul id="CrancyMenu" class="menu-bar__one crancy-dashboard-menu">
+        {
+          menuItems.map((item) => (
+            <li class={isActive(item.href) ? "active" : ""}>
+              <a class="collapsed" href={item.href}>
+                <span class="menu-bar__text">
+                  <span class="crancy-menu-icon crancy-svg-icon__v1">
+                    {/* Render Lucide React Icon directly */}
+                    <item.icon className="lucide-icon" />{" "}
+                    {/* Use item.icon as a component */}
+                  </span>
+                  <span class="menu-bar__name">{item.name}</span>
+                </span>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </div>
+
+  <div class="crancy-sidebar-padding pd-btm-40">
+    <h4 class="admin-menu__title">Help</h4>
+    <div class="menu-bar">
+      <ul class="menu-bar__one crancy-dashboard-menu" id="CrancyMenu">
+        {
+          helpMenuItems.map((item) => (
+            <li class={isActive(item.href) ? "active" : ""}>
+              <a class="collapsed" href={item.href}>
+                <span class="menu-bar__text">
+                  <span class="crancy-menu-icon crancy-svg-icon__v1">
+                    {/* Render Lucide React Icon directly */}
+                    <item.icon className="lucide-icon" />{" "}
+                    {/* Use item.icon as a component */}
+                  </span>
+                  <span class="menu-bar__name">{item.name}</span>
+                </span>
+              </a>
+            </li>
+          ))
+        }
+
+        <li>
+          <LogoutButton client:load />
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<style>
+  /* Base styles for Lucide icons */
+  .lucide-icon {
+    width: 20px; /* Adjust size to fit your design */
+    height: 20px;
+    stroke-width: 1.5; /* Default stroke width */
+    stroke: currentColor; /* Inherit color from parent text */
+    fill: none; /* Lucide icons are usually stroke-based */
+    transition: all 0.3s ease; /* Smooth transition for color changes */
+  }
+
+  /* Adjustments for existing .crancy-menu-icon */
+  .crancy-menu-icon {
+    display: inline-block; /* Ensure it behaves like a block for sizing */
+    margin-right: 1px; /* Maintain original margin */
+    padding: 0;
+    border-radius: 100%;
+    /* Remove min-width/height if Lucide icon directly controls size */
+    min-width: initial; /* Let lucide-icon control width */
+    min-height: initial; /* Let lucide-icon control height */
+  }
+
+  /* Active state for menu items - these should apply to .lucide-icon */
+  .menu-bar li.active a .crancy-menu-icon .lucide-icon,
+  .menu-bar li:hover a .crancy-menu-icon .lucide-icon {
+    color: #0033a0; /* Active/hover color from your style.css or brand colors */
+    stroke: #0033a0; /* Ensure stroke also changes */
+  }
+
+  /* Existing CSS from your Navbar.astro */
+  .menu-bar__one li.active a {
+    background-color: #e6f0ff;
+    color: #0033a0;
+    border-radius: 8px;
+  }
+
+  .menu-bar__one a {
+    transition: all 0.3s ease;
+  }
+
+  /* Specific styles for the LogoutButton (already in LogoutButton.tsx or here) */
+  .logout-button-style {
+    background: none;
+    border: none;
+    padding: 14px 0px; /* Match existing menu item padding */
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 22px;
+    color: #191b23; /* Default text color from your style.css */
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  .logout-button-style:hover {
+    color: #01369f; /* Hover color from your style.css */
+  }
+  .logout-button-style .icon {
+    /* This is for Lucide icon inside LogoutButton */
+    margin-right: 1px;
+    min-width: 30px; /* Keep this larger as per previous LogoutButton.tsx sizing */
+    color: currentColor;
+    stroke: currentColor;
+  }
+  .logout-button-style span {
+    position: relative;
+    top: 2px;
+  }
+  .logout-button-style:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+  .menu-bar__one li.active .logout-button-style {
+    /* Active state for logout button */
+    background-color: #e6f0ff;
+    color: #0033a0;
+    border-radius: 8px;
+  }
+  .menu-bar__one li.active .logout-button-style .icon {
+    /* Active icon state for logout button */
+    stroke: #0033a0;
+    color: #0033a0;
+  }
+</style>

@@ -1,0 +1,619 @@
+/* =====================================
+   Admin Dashboard Custom Styles
+   ===================================== */
+
+/* Brand Colors */
+:root {
+  --brand-dark-blue: #001d49;
+  --brand-orange: #ff5f15;
+  --text-dark: #1a202c;
+  --text-medium: #4a5568;
+  --text-light: #718096;
+  --border-light: #edf2f7;
+  --background-light: #f7fafc;
+  --red-destructive: #e53e3e;
+  --red-destructive-hover: #c53030;
+  --red-destructive-disabled: #fab5b5;
+}
+
+/* General Layout & Background */
+.firm-management-container {
+  max-width: 1300px;
+  margin: 2.5rem auto;
+  padding: 2.5rem;
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+  min-height: calc(100vh - 120px);
+  font-family: "Inter", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  color: var(--text-medium); /* Use CSS variable */
+}
+
+/* Page Header */
+.firm-management-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2.5rem;
+}
+
+.firm-management-title {
+  font-size: 2.25rem;
+  font-weight: 700;
+  color: var(--text-dark); /* Use CSS variable */
+}
+
+/* --- Button Overrides and New Variants --- */
+/* Your style.css already defines .crancy-btn. We are adding variants on top */
+
+/* Base overrides for crancy-btn to ensure consistent base */
+.crancy-btn {
+  /* Override existing padding if needed, or rely on variant/size classes */
+  padding: 0.75rem 1.25rem; /* Standard default padding */
+  border-radius: 6px;
+  font-weight: 500;
+  font-size: 0.9375rem; /* Standard font size */
+  transition: all 0.25s ease-in-out;
+}
+
+/* New Button Variants using Brand Colors */
+.button--primary {
+  /* For Add New Firm, Save, Create */
+  background-color: var(--brand-dark-blue);
+  color: #fff;
+  border-color: var(--brand-dark-blue);
+}
+.button--primary:hover {
+  background-color: var(--brand-orange); /* Accent color on hover for primary */
+  border-color: var(--brand-orange);
+}
+.button--primary:disabled {
+  background-color: #a0aec0; /* Muted gray */
+  border-color: #a0aec0;
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.button--outline {
+  /* For Edit, Previous, Next, Cancel */
+  background-color: #fff;
+  color: var(--text-medium);
+  border-color: #cbd5e0; /* Light gray */
+}
+.button--outline:hover {
+  background-color: var(--background-light); /* Very light gray */
+  border-color: #a0aec0; /* Darker border */
+  color: var(--text-dark);
+}
+.button--outline:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  background-color: var(--background-light);
+  color: var(--text-light);
+}
+
+.button--destructive {
+  /* For Delete */
+  background-color: var(--red-destructive);
+  color: #fff;
+  border-color: var(--red-destructive);
+}
+.button--destructive:hover {
+  background-color: var(--red-destructive-hover);
+  border-color: var(--red-destructive-hover);
+}
+.button--destructive:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  background-color: var(--red-destructive-disabled);
+  border-color: var(--red-destructive-disabled);
+}
+
+/* Button Sizes - applied as additional classes */
+.button--large {
+  /* New class for the Add New Firm button */
+  padding: 1rem 1.75rem; /* Larger padding */
+  font-size: 1.125rem; /* Larger text */
+  font-weight: 600; /* More emphasis */
+  border-radius: 8px; /* Slightly more rounded */
+}
+.button--small {
+  /* For table action buttons */
+  padding: 0.4rem 0.8rem;
+  font-size: 0.85rem;
+  border-radius: 4px;
+}
+
+/* Specific button overrides */
+.add-firm-button {
+  /* This class is already combined with .crancy-btn, .button--primary, .button--large */
+  /* No specific styles here unless overriding the base/variant/size */
+}
+
+.action-button {
+  margin-left: 0.6rem;
+}
+.action-button .icon {
+  width: 0.9rem;
+  height: 0.9rem;
+  margin-right: 0.3rem;
+}
+
+/* --- Input & Label Overrides --- */
+/* Your style.css likely has .crancy-input. We'll override its styling. */
+.crancy-input {
+  /* Or .custom-input if you're using that from ui/input.tsx */
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  font-size: 1rem;
+  color: var(--text-medium);
+  box-sizing: border-box;
+  transition: all 0.2s ease-in-out;
+}
+.crancy-input::placeholder {
+  color: var(--text-light);
+}
+.crancy-input:focus {
+  outline: none;
+  border-color: var(--brand-dark-blue);
+  box-shadow: 0 0 0 3px rgba(0, 29, 73, 0.15); /* Primary color focus ring */
+}
+
+/* Your style.css likely has .crancy-label. */
+.crancy-label {
+  /* Or .custom-label if from ui/label.tsx */
+  font-weight: 600;
+  color: var(--text-dark);
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+/* --- Card Overrides --- */
+/* Your style.css already defines .crancy-card */
+.crancy-card.firm-list-card {
+  /* More specific selector */
+  background-color: #fff;
+  border: 1px solid var(--border-light);
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.06);
+  margin-bottom: 2rem;
+}
+
+.card-header {
+  /* New custom class on CardHeader */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem 2rem;
+  border-bottom: 1px solid var(--background-light);
+}
+
+.card-title {
+  /* New custom class on CardTitle */
+  font-size: 1.625rem;
+  font-weight: 700;
+  color: var(--text-dark);
+}
+
+.card-content {
+  /* New custom class on CardContent */
+  padding: 1.5rem 2rem;
+}
+
+/* Search Input */
+.search-input-wrapper {
+  position: relative;
+  width: 100%;
+  max-width: 320px;
+}
+.search-input {
+  /* Applied to crancy-input */
+  padding-left: 2.75rem;
+}
+.search-icon {
+  position: absolute;
+  left: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-light);
+  width: 1.125rem;
+  height: 1.125rem;
+}
+
+/* --- Table Overrides --- */
+/* Your style.css already defines .crancy-table */
+.crancy-table.firm-table {
+  /* More specific selector */
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.crancy-table-header.firm-table-header {
+  /* More specific selector for thead */
+  background-color: var(--background-light);
+}
+
+.crancy-table-head-cell {
+  /* Applies to TableHead */
+  padding: 1.25rem 1.5rem;
+  text-align: left;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--text-light);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  border-bottom: 1px solid var(--border-light);
+}
+.table-head-cell--actions {
+  text-align: right;
+}
+
+.crancy-table-body.firm-table-body {
+  /* More specific selector for tbody */
+  /* No specific styles needed here, as rows/cells handle it */
+}
+
+.firm-table-row {
+  /* New class on TableRow */
+  border-bottom: 1px solid var(--border-light);
+  transition: background-color 0.2s ease-in-out;
+}
+.firm-table-row:last-child {
+  border-bottom: none;
+}
+.firm-table-row:hover {
+  background-color: #fdfefe;
+}
+
+.crancy-table-cell {
+  /* Applied to TableCell */
+  padding: 1rem 1.5rem;
+  font-size: 0.9375rem;
+  color: var(--text-medium);
+  white-space: nowrap;
+}
+.table-cell--name {
+  font-weight: 600;
+  color: var(--text-dark);
+}
+.table-cell--actions {
+  text-align: right;
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+}
+
+.empty-state-message,
+.empty-results-message {
+  text-align: center;
+  padding: 3rem;
+  color: var(--text-light);
+  font-size: 1.125rem;
+  font-style: italic;
+}
+
+/* --- Pagination --- */
+.pagination-controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 1.5rem;
+  padding: 1rem 1.5rem;
+  background-color: var(--background-light);
+  border-top: 1px solid var(--border-light);
+  border-radius: 0 0 12px 12px;
+}
+.pagination-button {
+  /* Uses .crancy-btn and .button--outline base */
+}
+.pagination-info {
+  font-size: 0.9375rem;
+  color: var(--text-light);
+  font-weight: 500;
+}
+
+/* --- Dialog Styles (Shadcn UI structure) --- */
+.dialog-content {
+  /* Applied to Shadcn DialogContent */
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+  padding: 2rem;
+  width: 90%;
+  max-width: 550px;
+  z-index: 1001;
+  max-height: 90vh;
+  overflow-y: auto;
+  animation: slideInFromTop 0.3s ease-out;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.dialog-header {
+  /* Applied to Shadcn DialogHeader */
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid var(--border-light);
+}
+
+.dialog-text-content {
+  /* New class */
+  flex-grow: 1;
+  padding-right: 2.5rem;
+}
+
+.dialog-title-text {
+  /* Applied to Shadcn DialogTitle */
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--text-dark);
+  margin-bottom: 0.5rem;
+}
+.dialog-description-text {
+  /* Applied to Shadcn DialogDescription */
+  font-size: 0.9375rem;
+  color: var(--text-light);
+}
+
+.dialog-close-button {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: var(--text-light);
+  padding: 0.25rem;
+  border-radius: 4px;
+  transition: all 0.2s ease-in-out;
+  line-height: 1;
+}
+.dialog-close-button:hover {
+  color: var(--text-dark);
+  background-color: var(--background-light);
+}
+
+.dialog-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.form-group {
+  display: grid;
+  grid-template-columns: 120px 1fr;
+  gap: 1rem;
+  align-items: center;
+}
+@media (max-width: 768px) {
+  .form-group {
+    grid-template-columns: 1fr;
+  }
+}
+
+.form-label {
+  /* Applied to crancy-label */
+  text-align: right;
+  font-weight: 600;
+  color: var(--text-medium);
+  padding-top: 0.25rem;
+}
+@media (max-width: 768px) {
+  .form-label {
+    text-align: left;
+  }
+}
+
+.form-input {
+  /* Applied to crancy-input */
+  /* Inherits from crancy-input base */
+}
+
+.dialog-footer {
+  /* Applied to Shadcn DialogFooter */
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border-light);
+}
+
+/* --- Spinner & Animations --- */
+.icon {
+  width: 1rem;
+  height: 1rem;
+  flex-shrink: 0;
+}
+
+.icon-spin {
+  animation: spin 1s linear infinite;
+  margin-right: 0.5rem;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideInFromTop {
+  from {
+    transform: translate(-50%, -60%);
+    opacity: 0;
+  }
+  to {
+    transform: translate(-50%, -50%);
+    opacity: 1;
+  }
+}
+
+/* --- Loading/Error screens --- */
+.admin-loading-screen,
+.admin-error-screen {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background-color: var(--background-light);
+  color: var(--text-medium);
+}
+.loading-spinner {
+  width: 3.5rem;
+  height: 3.5rem;
+  animation: spin 1s linear infinite;
+  color: var(--brand-dark-blue);
+  margin-bottom: 1.5rem;
+}
+.loading-text {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--text-medium);
+}
+.error-message {
+  font-size: 1.25rem;
+  font-weight: 500;
+  color: var(--red-destructive);
+  margin-bottom: 1rem;
+}
+.retry-button {
+  /* Uses .crancy-btn and .button--primary */
+}
+.retry-button .icon {
+  margin-right: 0.5rem;
+}
+
+/* --- Location Management Specific Styles --- */
+
+.location-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(
+    auto-fill,
+    minmax(320px, 1fr)
+  ); /* Responsive grid */
+  gap: 1.5rem; /* Gap between cards */
+}
+
+.location-card {
+  /* Inherits from .crancy-card */
+  border: 1px solid var(--border-light);
+  border-radius: 12px;
+  overflow: hidden; /* Ensure map corners are rounded */
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+.location-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+}
+
+.location-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid var(--background-light);
+  background-color: #fff; /* Ensure white background */
+}
+
+.location-card-title {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--text-dark);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.location-title-icon {
+  color: var(--brand-dark-blue); /* Color for MapPin icon in title */
+}
+
+.location-card-actions {
+  display: flex;
+  gap: 0.5rem; /* Space between edit/delete buttons */
+}
+
+.location-card-content {
+  padding: 1rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.location-address {
+  font-size: 0.9375rem;
+  color: var(--text-medium);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0; /* No extra margin for paragraphs */
+}
+.location-detail-icon {
+  color: var(--text-light); /* Muted icon for address details */
+}
+
+.location-map-wrapper {
+  width: 100%;
+  height: 200px; /* Fixed height for small maps in cards */
+  border-radius: 8px; /* Match card rounding */
+  overflow: hidden; /* Ensure map itself respects border-radius */
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.05); /* Subtle inner border */
+}
+.no-map-data {
+  font-size: 0.9375rem;
+  color: var(--text-light);
+  text-align: center;
+  padding: 1rem 0;
+  font-style: italic;
+}
+
+/* --- Dialog Specific Map Picker Styles --- */
+.location-dialog-content {
+  max-width: 700px; /* Wider dialog for map picker */
+}
+
+.map-coordinates-group {
+  grid-template-columns: 120px 1fr; /* For label and coordinates inputs */
+}
+.coordinates-display {
+  display: flex;
+  gap: 0.5rem;
+  width: 100%;
+}
+.coordinate-input {
+  flex: 1; /* Inputs take equal width */
+}
+
+.dialog-map-picker-wrapper {
+  margin-top: 1rem;
+  border: 1px solid var(--border-light);
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.05);
+}
+.map-picker-hint {
+  font-size: 0.875rem;
+  color: var(--text-light);
+  text-align: center;
+  margin-top: 0.5rem;
+}

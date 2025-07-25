@@ -1,0 +1,477 @@
+---
+import Header from "@/components/Header.astro";
+import Navbar from "@/components/Navbar.astro";
+import HomeLayout from "@/layouts/HomeLayout.astro";
+---
+
+<HomeLayout>
+  <div class="crancy-body-area">
+    <!-- crancy Admin Menu -->
+    <div class="crancy-smenu" id="CrancyMenu">
+      <!-- Admin Menu -->
+      <Navbar />
+      <!-- End Admin Menu -->
+    </div>
+    <!-- End crancy Admin Menu -->
+
+    <!-- Start Header -->
+    <Header />
+    <!-- End Header -->
+
+    <!-- crancy Dashboard -->
+    <section class="crancy-adashboard crancy-show">
+      <div class="container container__bscreen">
+        <div class="row">
+          <div class="col-12">
+            <div class="crancy-body">
+              <!-- Dashboard Inner -->
+              <div class="crancy-dsinner">
+                <div class="row mg-top-10">
+                  <div class="col-lg-9 col-12">
+                    <div class="crancy-user-search mg-top-40">
+                      <!-- Single Search -->
+                      <div
+                        class="crancy-user-search__single crancy-user-search__single--sform"
+                      >
+                        <div
+                          class="crancy-header__form crancy-header__form--user"
+                        >
+                          <form class="crancy-header__form-inner" action="#">
+                            <button class="search-btn" type="submit">
+                              <svg
+                                width="20"
+                                height="20"
+                                viewBox="0 0 20 20"
+                                fill="none"
+                                xmlns="http://www.w3.org/2000/svg"
+                              >
+                                <circle
+                                  cx="9.78639"
+                                  cy="9.78614"
+                                  r="8.23951"
+                                  stroke="#9AA2B1"
+                                  stroke-width="1.5"
+                                  stroke-linecap="round"
+                                  stroke-linejoin="round"></circle>
+                                <path
+                                  d="M15.5176 15.9448L18.7479 19.1668"
+                                  stroke="#9AA2B1"
+                                  stroke-width="1.5"
+                                  stroke-linecap="round"
+                                  stroke-linejoin="round"></path>
+                              </svg>
+                            </button>
+                            <input
+                              name="s"
+                              value=""
+                              type="text"
+                              placeholder="Job Title, Company, or Keywords"
+                            />
+                          </form>
+                        </div>
+                      </div>
+                      <!-- End Single Search -->
+                      <!-- Single Search -->
+                      <div
+                        class="crancy-user-search__single crancy-user-search__single--location"
+                      >
+                        <img src="img/location.svg" />
+                        <select name="location" id="location">
+                          <option value="company" selected="selected">
+                            Select Location
+                          </option>
+                          <option>New York</option>
+                          <option>Sydney</option>
+                          <option>Dhaka</option>
+                          <option>Victoria</option>
+                        </select>
+                      </div>
+                      <!-- End Single Search -->
+                      <!-- Single Search -->
+                      <div
+                        class="crancy-user-search__single crancy-user-search__single--button"
+                      >
+                        <div class="crancy-user-search__group">
+                          <div class="crancy-user-search__filter">
+                            <a href="#"><img src="img/filter-icon2.svg" /></a>
+                          </div>
+                          <a href="#" class="crancy-btn crancy-btn__user"
+                            >Search</a
+                          >
+                        </div>
+                      </div>
+                      <!-- End Single Search -->
+                    </div>
+
+                    <div class="row">
+                      <div class="col-xxl-3 col-lg-4 col-md-6 col-12">
+                        <!-- Single User -->
+                        <div class="crancy-single-user mg-top-30">
+                          <div class="crancy-toggle">
+                            <a href="#"><img src="img/toggle-icon.svg" /></a>
+                          </div>
+                          <div class="crancy-single-user__head">
+                            <img src="img/user-2.png" />
+                            <h4 class="crancy-single-user__title">
+                              Courtney Henry<span>Dhaka, Bangladesh</span>
+                            </h4>
+                            <p class="crancy-single-user__label">Manager</p>
+                          </div>
+                          <div class="crancy-single-user__info">
+                            <ul class="crancy-single-user__list">
+                              <li>
+                                Email: <a href="#">cooper@example.com</a>
+                              </li>
+                              <li>Phone: <a href="#">(219) 555-0114</a></li>
+                            </ul>
+                          </div>
+                          <a href="inbox.html" class="crancy-btn__default"
+                            >Message</a
+                          >
+                        </div>
+                        <!-- End Single User -->
+                      </div>
+                      <div class="col-xxl-3 col-lg-4 col-md-6 col-12">
+                        <!-- Single User -->
+                        <div class="crancy-single-user mg-top-30">
+                          <div class="crancy-toggle">
+                            <a href="#"><img src="img/toggle-icon.svg" /></a>
+                          </div>
+                          <div class="crancy-single-user__head">
+                            <img src="img/user-3.png" />
+                            <h4 class="crancy-single-user__title">
+                              Daniel Jason<span>New York, US</span>
+                            </h4>
+                            <p class="crancy-single-user__label">
+                              President of Sales
+                            </p>
+                          </div>
+                          <div class="crancy-single-user__info">
+                            <ul class="crancy-single-user__list">
+                              <li>
+                                Email: <a href="#">cooper@example.com</a>
+                              </li>
+                              <li>Phone: <a href="#">(219) 555-0114</a></li>
+                            </ul>
+                          </div>
+                          <a href="inbox.html" class="crancy-btn__default"
+                            >Message</a
+                          >
+                        </div>
+                        <!-- End Single User -->
+                      </div>
+                      <div class="col-xxl-3 col-lg-4 col-md-6 col-12">
+                        <!-- Single User -->
+                        <div class="crancy-single-user mg-top-30">
+                          <div class="crancy-toggle">
+                            <a href="#"><img src="img/toggle-icon.svg" /></a>
+                          </div>
+                          <div class="crancy-single-user__head">
+                            <img src="img/user-4.png" />
+                            <h4 class="crancy-single-user__title">
+                              Fency Anna<span>Sydney, Australia</span>
+                            </h4>
+                            <p class="crancy-single-user__label">Head of HR</p>
+                          </div>
+                          <div class="crancy-single-user__info">
+                            <ul class="crancy-single-user__list">
+                              <li>
+                                Email: <a href="#">cooper@example.com</a>
+                              </li>
+                              <li>Phone: <a href="#">(219) 555-0114</a></li>
+                            </ul>
+                          </div>
+                          <a href="inbox.html" class="crancy-btn__default"
+                            >Message</a
+                          >
+                        </div>
+                        <!-- End Single User -->
+                      </div>
+                      <div class="col-xxl-3 col-lg-4 col-md-6 col-12">
+                        <!-- Single User -->
+                        <div class="crancy-single-user mg-top-30">
+                          <div class="crancy-toggle">
+                            <a href="#"><img src="img/toggle-icon.svg" /></a>
+                          </div>
+                          <div class="crancy-single-user__head">
+                            <img src="img/user-5.png" />
+                            <h4 class="crancy-single-user__title">
+                              James Cameron<span>Paris, France</span>
+                            </h4>
+                            <p class="crancy-single-user__label">
+                              Sales Manager
+                            </p>
+                          </div>
+                          <div class="crancy-single-user__info">
+                            <ul class="crancy-single-user__list">
+                              <li>
+                                Email: <a href="#">cooper@example.com</a>
+                              </li>
+                              <li>Phone: <a href="#">(219) 555-0114</a></li>
+                            </ul>
+                          </div>
+                          <a href="inbox.html" class="crancy-btn__default"
+                            >Message</a
+                          >
+                        </div>
+                        <!-- End Single User -->
+                      </div>
+                      <div class="col-xxl-3 col-lg-4 col-md-6 col-12">
+                        <!-- Single User -->
+                        <div class="crancy-single-user mg-top-30">
+                          <div class="crancy-toggle">
+                            <a href="#"><img src="img/toggle-icon.svg" /></a>
+                          </div>
+                          <div class="crancy-single-user__head">
+                            <img src="img/user-6.png" />
+                            <h4 class="crancy-single-user__title">
+                              Janny Smooth<span>Begum Para, Canada</span>
+                            </h4>
+                            <p class="crancy-single-user__label">
+                              Support Engineer
+                            </p>
+                          </div>
+                          <div class="crancy-single-user__info">
+                            <ul class="crancy-single-user__list">
+                              <li>
+                                Email: <a href="#">cooper@example.com</a>
+                              </li>
+                              <li>Phone: <a href="#">(219) 555-0114</a></li>
+                            </ul>
+                          </div>
+                          <a href="inbox.html" class="crancy-btn__default"
+                            >Message</a
+                          >
+                        </div>
+                        <!-- End Single User -->
+                      </div>
+                      <div class="col-xxl-3 col-lg-4 col-md-6 col-12">
+                        <!-- Single User -->
+                        <div class="crancy-single-user mg-top-30">
+                          <div class="crancy-toggle">
+                            <a href="#"><img src="img/toggle-icon.svg" /></a>
+                          </div>
+                          <div class="crancy-single-user__head">
+                            <img src="img/user-7.png" />
+                            <h4 class="crancy-single-user__title">
+                              Albeda Simu<span>Dhaka, Bangladesh</span>
+                            </h4>
+                            <p class="crancy-single-user__label">
+                              Beta Testing
+                            </p>
+                          </div>
+                          <div class="crancy-single-user__info">
+                            <ul class="crancy-single-user__list">
+                              <li>
+                                Email: <a href="#">cooper@example.com</a>
+                              </li>
+                              <li>Phone: <a href="#">(219) 555-0114</a></li>
+                            </ul>
+                          </div>
+                          <a href="inbox.html" class="crancy-btn__default"
+                            >Message</a
+                          >
+                        </div>
+                        <!-- End Single User -->
+                      </div>
+                      <div class="col-xxl-3 col-lg-4 col-md-6 col-12">
+                        <!-- Single User -->
+                        <div class="crancy-single-user mg-top-30">
+                          <div class="crancy-toggle">
+                            <a href="#"><img src="img/toggle-icon.svg" /></a>
+                          </div>
+                          <div class="crancy-single-user__head">
+                            <img src="img/user-2.png" />
+                            <h4 class="crancy-single-user__title">
+                              Courtney Henry<span>Dhaka, Bangladesh</span>
+                            </h4>
+                            <p class="crancy-single-user__label">Manager</p>
+                          </div>
+                          <div class="crancy-single-user__info">
+                            <ul class="crancy-single-user__list">
+                              <li>
+                                Email: <a href="#">cooper@example.com</a>
+                              </li>
+                              <li>Phone: <a href="#">(219) 555-0114</a></li>
+                            </ul>
+                          </div>
+                          <a href="inbox.html" class="crancy-btn__default"
+                            >Message</a
+                          >
+                        </div>
+                        <!-- End Single User -->
+                      </div>
+                      <div class="col-xxl-3 col-lg-4 col-md-6 col-12">
+                        <!-- Single User -->
+                        <div class="crancy-single-user mg-top-30">
+                          <div class="crancy-toggle">
+                            <a href="#"><img src="img/toggle-icon.svg" /></a>
+                          </div>
+                          <div class="crancy-single-user__head">
+                            <img src="img/user-3.png" />
+                            <h4 class="crancy-single-user__title">
+                              Daniel Jason<span>New York, US</span>
+                            </h4>
+                            <p class="crancy-single-user__label">
+                              President of Sales
+                            </p>
+                          </div>
+                          <div class="crancy-single-user__info">
+                            <ul class="crancy-single-user__list">
+                              <li>
+                                Email: <a href="#">cooper@example.com</a>
+                              </li>
+                              <li>Phone: <a href="#">(219) 555-0114</a></li>
+                            </ul>
+                          </div>
+                          <a href="inbox.html" class="crancy-btn__default"
+                            >Message</a
+                          >
+                        </div>
+                        <!-- End Single User -->
+                      </div>
+                    </div>
+                    <div class="row mg-top-30">
+                      <div class="crancy-pagination crancy-pagination__v3">
+                        <ul class="crancy-pagination__list">
+                          <li class="crancy-pagination__button">
+                            <a href="#"><i class="fas fa-angles-left"></i></a>
+                          </li>
+                          <li class="crancy-pagination__button">
+                            <a href="#"><i class="fas fa-angle-left"></i></a>
+                          </li>
+                          <li><a href="#">1</a></li>
+                          <li class="active"><a href="#">2</a></li>
+                          <li><a href="#">3</a></li>
+                          <li><a href="#">...</a></li>
+                          <li><a href="#">4</a></li>
+                          <li class="crancy-pagination__button">
+                            <a href="#"><i class="fas fa-angles-right"></i></a>
+                          </li>
+                          <li class="crancy-pagination__button">
+                            <a href="#"><i class="fas fa-angle-right"></i></a>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-lg-3 col-12">
+                    <!-- Featured User -->
+                    <div class="crancy-featured-user mg-top-70">
+                      <!-- User Head -->
+                      <div class="crancy-featured-user__head">
+                        <img src="img/user-3.png" />
+                        <h4 class="crancy-featured-user__title">
+                          Courtney Henry
+                        </h4>
+                        <p class="crancy-featured-user__text">
+                          Finance managers • Jakarta, Indonesia• 2 days ago
+                        </p>
+                      </div>
+                      <!-- Total User -->
+                      <div
+                        class="crancy-tasksingle__group crancy-tasksingle__group--activity crancy-featured-user__lists mg-top-20"
+                      >
+                        <a href="#"
+                          ><img src="img/author-1.png" alt="author-img" /></a
+                        >
+                        <a href="#"
+                          ><img src="img/author-2.png" alt="author-img" /></a
+                        >
+                        <a href="#"
+                          ><img src="img/author-3.png" alt="author-img" /></a
+                        >
+                        <a href="#"><span>+8</span></a>
+                        <b class="crancy-featured-user__more"
+                          >Eight friends work here</b
+                        >
+                      </div>
+                      <div class="crancy-featured-user__btn-group">
+                        <a href="#"><img src="img/saved-icon.svg" /></a>
+                        <a href="#"><img src="img/share-icon.svg" /></a>
+                      </div>
+                      <!-- User Info List -->
+                      <ul
+                        class="crancy-featured-user__list crancy-featured-user__border"
+                      >
+                        <li>Experience <a href="#">2-4 Years</a></li>
+                        <li>Seniority Level <a href="#">Senior Level</a></li>
+                        <li>Employment <a href="#">Full Time</a></li>
+                        <li>Salary <a href="#">$250-300</a></li>
+                      </ul>
+                      <!-- User File List -->
+                      <div
+                        class="crancy-featured-user__files crancy-featured-user__border"
+                      >
+                        <h4 class="crancy-featured-user__title--small">
+                          Files
+                        </h4>
+                        <a href="#">
+                          <div class="crancy-featured-user__fcontent">
+                            <span class="crancy-featured-user__ficon">
+                              <img src="img/file-icon.svg" />
+                            </span>
+                            <h4 class="crancy-featured-user__fname">
+                              Overview.pdf<span
+                                class="crancy-featured-user__fsize">50 Kb</span
+                              >
+                            </h4>
+                          </div>
+                          <div class="crancy-featured-user__fdownload">
+                            <img src="img/download-icon.svg" />
+                          </div>
+                        </a>
+                        <a href="#" class="mg-top-20">
+                          <div class="crancy-featured-user__fcontent">
+                            <span class="crancy-featured-user__ficon">
+                              <img src="img/file-icon.svg" />
+                            </span>
+                            <h4 class="crancy-featured-user__fname">
+                              Overview.pdf<span
+                                class="crancy-featured-user__fsize">50 Kb</span
+                              >
+                            </h4>
+                          </div>
+                          <div class="crancy-featured-user__fdownload">
+                            <img src="img/download-icon.svg" />
+                          </div>
+                        </a>
+                      </div>
+                      <!-- User Hire Agent -->
+                      <div
+                        class="crancy-featured-user__hagent crancy-featured-user__border"
+                      >
+                        <h4 class="crancy-featured-user__title--small">
+                          Hiring Agent
+                        </h4>
+                        <div class="crancy-featured-user__hcard">
+                          <img src="img/hire-agent.png" />
+                          <div class="crancy-featured-user__hcontent">
+                            <h4 class="crancy-featured-user__hagent--title">
+                              Annette Black
+                              <span><b>HR Specialist</b> • 4 Yrs Exp</span>
+                            </h4>
+                          </div>
+                        </div>
+                        <div class="crancy-featured-user__button mg-top-25">
+                          <a
+                            href="inbox.html"
+                            class="crancy-btn crancy-featured-user__btn"
+                            >Add a contact</a
+                          >
+                        </div>
+                      </div>
+                    </div>
+                    <!-- End Featured User -->
+                  </div>
+                </div>
+              </div>
+              <!-- End Dashboard Inner -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- End crancy Dashboard -->
+  </div>
+</HomeLayout>

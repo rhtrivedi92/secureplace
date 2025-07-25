@@ -1,0 +1,34 @@
+---
+// src/pages/super-admin/firm-management.astro
+import HomeLayout from "@/layouts/HomeLayout.astro";
+import FirmManagementTable from "@/components/management/FirmManagementTable"; // Ensure this path is correct
+import "../../components/management/firm-management.css";
+import Header from "@/components/Header.astro";
+import NavbarSuperAdmin from "@/components/Navbar-SuperAdmin.astro";
+---
+
+<HomeLayout title="Firm Management - Secure Place">
+  <div class="crancy-body-area">
+    <!-- crancy Admin Menu -->
+    <div class="crancy-smenu" id="CrancyMenu">
+      <!-- Admin Menu -->
+      <NavbarSuperAdmin />
+      <!-- End Admin Menu -->
+    </div>
+    <!-- End crancy Admin Menu -->
+
+    <!-- Start Header -->
+    <Header />
+    <!-- End Header -->
+
+    <!-- crancy Dashboard -->
+
+    <section class="crancy-adashboard crancy-show">
+      <main>
+        {(<FirmManagementTable client:load />)}
+      </main>
+    </section>
+
+    <!-- End crancy Dashboard -->
+  </div>
+</HomeLayout>

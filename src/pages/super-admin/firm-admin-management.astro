@@ -1,0 +1,39 @@
+---
+// src/pages/super-admin/firm-admin-management.astro
+import HomeLayout from "@/layouts/HomeLayout.astro";
+import FirmAdminManagementTable from "@/components/management/FirmAdminManagementTable.tsx"; // Import the new component
+
+import "../../components/management/firm-management.css";
+
+import Header from "@/components/Header.astro";
+import NavbarSuperAdmin from "@/components/Navbar-SuperAdmin.astro";
+
+// Forces this page to be server-rendered at runtime.
+export const prerender = false;
+---
+
+<HomeLayout title="Firm Admin Management - Secure Place">
+  <div class="crancy-body-area">
+    <!-- crancy Admin Menu -->
+    <div class="crancy-smenu" id="CrancyMenu">
+      <!-- Admin Menu -->
+      <NavbarSuperAdmin />
+      <!-- End Admin Menu -->
+    </div>
+    <!-- End crancy Admin Menu -->
+
+    <!-- Start Header -->
+    <Header />
+    <!-- End Header -->
+
+    <!-- crancy Dashboard -->
+
+    <section class="crancy-adashboard crancy-show">
+      <main>
+        {(<FirmAdminManagementTable client:load />)}
+      </main>
+    </section>
+
+    <!-- End crancy Dashboard -->
+  </div>
+</HomeLayout>

@@ -1,0 +1,128 @@
+---
+// Navbar.astro
+import LogoutButton from "./auth/LogoutButton";
+import SvgIcon from "./SvgIcon.astro";
+
+const currentPath = Astro.url.pathname;
+
+// Define your menu items with their href paths - NO hasSubMenu property
+const menuItems = [
+  { name: "Dashboard", href: "/home", icon: "dashboard" },
+  { name: "My Account", href: "/my-account", icon: "my-account" },
+  { name: "Locations", href: "/locations", icon: "locations" },
+  { name: "Employees", href: "/employees", icon: "employees" },
+  { name: "Alert Logs", href: "/alert-logs", icon: "alert-logs" },
+  {
+    name: "Drill Alert Log",
+    href: "/drill-alert-log",
+    icon: "drill-alert-log",
+  },
+];
+
+const helpMenuItems = [
+  { name: "Settings", href: "/settings", icon: "settings" },
+];
+
+// Helper function to determine if a link is active
+const isActive = (href: string) => {
+  if (href === "/home") {
+    return currentPath === href || currentPath === "/";
+  }
+  return currentPath.startsWith(href);
+};
+---
+
+<div class="admin-menu">
+  <div class="logo crancy-sidebar-padding pd-right-0">
+    <a class="crancy-logo" href="/home">
+      <img
+        class="crancy-logo__main"
+        src="/img/sp-logo.png"
+        alt="Secure Place Logo"
+      />
+      <img
+        class="crancy-logo__main--dark"
+        src="/img/sp-logo.png"
+        alt="Secure Place Logo"
+      />
+      <img
+        class="crancy-logo__main--small"
+        src="/img/sp-icon.png"
+        alt="Secure Place Icon"
+      />
+      <img
+        class="crancy-logo__main--small--dark"
+        src="/img/logo-icon-dark.html"
+        alt="Secure Place Icon Dark"
+      />
+    </a>
+    <div id="crancy__sicon" class="crancy__sicon close-icon">
+      <img src="/img/arrow-icon.svg" alt="Toggle Sidebar" />
+    </div>
+  </div>
+
+  <div class="admin-menu__one crancy-sidebar-padding mg-top-20">
+    <h4 class="admin-menu__title">Menu</h4>
+    <div class="menu-bar">
+      <ul id="CrancyMenu" class="menu-bar__one crancy-dashboard-menu">
+        {
+          menuItems.map((item) => (
+            <li class={isActive(item.href) ? "active" : ""}>
+              <a class="collapsed" href={item.href}>
+                <span class="menu-bar__text">
+                  <span class="crancy-menu-icon crancy-svg-icon__v1">
+                    <SvgIcon iconName={item.icon} />
+                  </span>
+                  <span class="menu-bar__name">{item.name}</span>
+                </span>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </div>
+
+  <div class="crancy-sidebar-padding pd-btm-40">
+    <h4 class="admin-menu__title">Help</h4>
+    <div class="menu-bar">
+      <ul class="menu-bar__one crancy-dashboard-menu" id="CrancyMenu">
+        {
+          helpMenuItems.map((item) => (
+            <li class={isActive(item.href) ? "active" : ""}>
+              <a class="collapsed" href={item.href}>
+                <span class="menu-bar__text">
+                  <span class="crancy-menu-icon crancy-svg-icon__v1">
+                    <SvgIcon iconName={item.icon} />
+                  </span>
+                  <span class="menu-bar__name">{item.name}</span>
+                </span>
+              </a>
+            </li>
+          ))
+        }
+
+        <li>
+          <LogoutButton client:load />
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<style>
+  /* Add your existing CSS here */
+  .menu-bar__one li.active a {
+    background-color: #e6f0ff; /* Example active background color */
+    color: #0033a0; /* Example active text color */
+    border-radius: 8px; /* Example border-radius */
+  }
+
+  .menu-bar__one li.active a .crancy-svg-icon path {
+    stroke: #0033a0; /* Example active icon color */
+  }
+
+  .menu-bar__one a {
+    transition: all 0.3s ease;
+  }
+</style>
