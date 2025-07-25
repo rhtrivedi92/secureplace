@@ -1,125 +1,12 @@
 ---
 // src/pages/locations.astro
 import HomeLayout from "@/layouts/HomeLayout.astro";
-import LocationManagement from "@/components/management/LocationManagement.tsx"; // Import the new component
-import { createServerClient } from "../lib/supabaseClient";
+
 import "../components/management/firm-management.css";
 import NavbarSuperAdmin from "@/components/Navbar-SuperAdmin.astro";
 import Header from "@/components/Header.astro";
 // Forces this page to be server-rendered at runtime.
 export const prerender = false;
-
-console.log("Astro Page: locations.astro - Starting server-side check.");
-
-let user = null;
-let profile = null;
-let userData = null;
-let redirectTo: string | null = null;
-
-try {
-  const serverSupabase = createServerClient(Astro);
-  const {
-    data: { user: authUser },
-    error: authError,
-  } = await serverSupabase.auth.getUser();
-
-  console.log("Astro Page: Auth User Data (from server client):", authUser);
-  console.log("Astro Page: Auth Error (from server client):", authError);
-
-  if (authError) {
-    console.error(
-      "Astro: Error getting user from Supabase Auth (server-side):",
-      authError.message
-    );
-    redirectTo = "/";
-  } else if (!authUser) {
-    console.log("Astro: No authenticated user found on server-side.");
-    redirectTo = "/";
-  } else {
-    user = authUser;
-    console.log(
-      "Astro: Authenticated user ID (server-side):",
-      user.id,
-      "Email:",
-      user.email
-    );
-
-    const { data: userProfile, error: profileError } = await serverSupabase
-      .from("profiles")
-      .select("role, firm_id")
-      .eq("id", user.id)
-      .single();
-
-    console.log(
-      "Astro Page: User Profile Data (from server client):",
-      userProfile
-    );
-    console.log(
-      "Astro Page: Profile Fetch Error (from server client):",
-      profileError
-    );
-
-    if (profileError || !userProfile) {
-      console.error(
-        "Astro: Error fetching user profile (server-side):",
-        profileError?.message || `Profile not found for user ID: ${user.id}`
-      );
-      await serverSupabase.auth.signOut();
-      console.log(
-        "Astro: User signed out due to profile fetch error (server-side)."
-      );
-      redirectTo = "/";
-    } else {
-      profile = userProfile;
-      console.log("Astro: Fetched profile role (server-side):", profile.role);
-      console.log(
-        "Astro: Fetched profile firm_id (server-side):",
-        profile.firm_id
-      );
-
-      // Access Control: Only Firm Admins (and Super Admins, if they also use this path) can access
-      // For now, let's keep it strict to Firm Admins as per the request.
-      // Super Admins would typically use the `Firm Management` page to manage Firms and then drill down.
-      if (profile.role !== "firm_admin") {
-        console.warn(
-          `Astro: User ${user.id} with role "${profile.role}" attempted to access Location Management. Redirecting.`
-        );
-        redirectTo = "/dashboard"; // Redirect to a generic dashboard or access denied page
-      } else if (!profile.firm_id) {
-        // Firm Admin must be assigned a firm to manage locations
-        console.warn(
-          `Astro: Firm Admin ${user.id} not assigned to a firm. Redirecting.`
-        );
-        redirectTo = "/dashboard"; // Redirect if Firm Admin has no firm_id
-      } else {
-        console.log(
-          "Astro: User is a Firm Admin and assigned to a firm. Granting access to Location Management."
-        );
-        userData = {
-          id: user.id,
-          email: user.email,
-          role: profile.role,
-          firmId: profile.firm_id, // Pass the firm_id to the React component
-        };
-      }
-    }
-  }
-} catch (e: any) {
-  console.error(
-    "Astro: UNEXPECTED ERROR during server-side authentication or profile fetching:",
-    e
-  );
-  redirectTo = "/";
-}
-
-if (redirectTo) {
-  console.log(`Astro Page: Redirecting to: ${redirectTo}`);
-  return Astro.redirect(redirectTo);
-}
-
-console.log(
-  "Astro Page: locations.astro - Server-side check complete. Rendering component."
-);
 ---
 
 <HomeLayout title="Location Management - Secure Place">
@@ -139,18 +26,7 @@ console.log(
     <!-- crancy Dashboard -->
 
     <section class="crancy-adashboard crancy-show">
-      <main>
-        {
-          userData ? (
-            <LocationManagement client:load user={userData} />
-          ) : (
-            <div class="flex justify-center items-center h-screen text-red-600 text-lg">
-              Authentication or authorization failed. Please try logging in
-              again.
-            </div>
-          )
-        }
-      </main>
+      <main></main>
     </section>
 
     <!-- End crancy Dashboard -->
