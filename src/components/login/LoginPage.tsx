@@ -49,27 +49,23 @@ export default function LoginPage({
     setShowPassword((prev) => !prev);
   }, []);
 
-  // Make checkActiveSession a useCallback at the top level
+  // NEW useEffect: Check for active session on component mount
   const checkActiveSession = useCallback(async () => {
     setIsLoading(true); // Ensure loading state is active during check
     setErrorMessage(null); // Clear any previous errors
     try {
-      // Attempt to get the current authenticated user session from Appwrite
-      const currentAppwriteUser = await account.get(); // Throws if no session
+      const currentAppwriteUser = await account.get(); // Get the current active session/user data
       console.log(
         "LoginPage: Existing session found for Appwrite User ID:",
         currentAppwriteUser.$id
       );
 
-      // If a session is active, fetch the corresponding user profile from your database
+      // --- CRITICAL FIX 1: Add collectionId to listDocuments ---
       const userProfileResponse =
         await databases.listDocuments<AppwriteProfile>(
           import.meta.env.PUBLIC_APPWRITE_DATABASE_ID,
-          import.meta.env.PUBLIC_APPWRITE_USER_PROFILES_COLLECTION_ID,
-          [
-            Query.equal("userId", currentAppwriteUser.$id), // Appwrite User ID is currentSession.$id
-            Query.limit(1), // Expect only one profile
-          ]
+          import.meta.env.PUBLIC_APPWRITE_USER_PROFILES_COLLECTION_ID, // <--- ADDED collectionId HERE
+          [Query.equal("userId", currentAppwriteUser.$id), Query.limit(1)]
         );
 
       if (userProfileResponse.documents.length === 0) {
@@ -77,17 +73,17 @@ export default function LoginPage({
           "LoginPage: User profile document not found for active session ID:",
           currentAppwriteUser.$id
         );
-        await account.deleteSession("current"); // Log out from Appwrite if profile is missing
+        await account.deleteSession("current");
         setErrorMessage(
           "Your user profile is missing or inaccessible. Please contact support."
         );
-        setIsLoading(false); // Stop loading, show error
+        setIsLoading(false);
         return;
       }
 
-      const profileData = userProfileResponse.documents[0]; // Get the found profile document
+      const profileData = userProfileResponse.documents[0];
       const userRole = profileData.role;
-      const firmId = profileData.firmId; // Get firmId from the profile
+      const firmId = profileData.firmId;
 
       console.log(
         "LoginPage: Session active, fetched profile role:",
@@ -96,50 +92,41 @@ export default function LoginPage({
         firmId
       );
 
-      // Determine redirection path based on role
-      let redirectPath = "/dashboard"; // Default generic dashboard
+      let redirectPath = "/dashboard";
       switch (userRole) {
         case "super_admin":
-          redirectPath = "/dashboard/super-admin";
+          redirectPath = "/super-admin/firm-management";
           break;
         case "firm_admin":
-          redirectPath = "/dashboard/firm-admin"; // Location management for firm admins
+          redirectPath = "/locations";
           break;
         default:
-          redirectPath = "/dashboard"; // For other roles like 'employee'
+          redirectPath = "/dashboard";
           break;
       }
-
       console.log("LoginPage: Redirecting to:", redirectPath);
-      window.location.href = redirectPath; // Redirect to appropriate dashboard
-      // Note: No need to set isLoading(false) here as a redirect will happen immediately
-      return; // Stop further execution
+      window.location.href = redirectPath;
+      return;
     } catch (err: any) {
-      // This catch block will execute if there is NO active session (expected for non-logged-in users)
-      // or if account.get() fails (e.g., token expired, network error before login)
       console.log(
         "LoginPage: No active session or session invalid:",
         err.message
       );
-      // Do NOT set errorMessage here, just allow the login form to show.
-      // We set isLoading to false in finally to always show the form if not redirected.
     } finally {
-      setIsLoading(false); // Stop loading, show the form if no redirect happened
+      setIsLoading(false);
     }
-  }, [databases, onRedirect]); // Add dependencies for useCallback
+  }, [databases, onRedirect]); // Added databases to dependencies for useCallback
 
-  // useEffect: Call checkActiveSession on component mount
   useEffect(() => {
     checkActiveSession();
-  }, [checkActiveSession]); // Dependency on checkActiveSession useCallback
+  }, [checkActiveSession]);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    setErrorMessage(null); // Clear previous errors
-    setIsLoading(true); // Indicate login submission is in progress
+    setErrorMessage(null);
+    setIsLoading(true);
 
     try {
-      // 1. Authenticate with Appwrite (create email/password session)
       const session = await account.createEmailPasswordSession(email, password);
 
       console.log(
@@ -147,14 +134,12 @@ export default function LoginPage({
         session.userId
       );
 
+      // --- CRITICAL FIX 2: Add collectionId to listDocuments ---
       const userProfileResponse =
         await databases.listDocuments<AppwriteProfile>(
           import.meta.env.PUBLIC_APPWRITE_DATABASE_ID,
-          import.meta.env.PUBLIC_APPWRITE_USER_PROFILES_COLLECTION_ID,
-          [
-            Query.equal("userId", session.userId), // Query by Appwrite User ID
-            Query.limit(1), // Expect only one profile
-          ]
+          import.meta.env.PUBLIC_APPWRITE_USER_PROFILES_COLLECTION_ID, // <--- ADDED collectionId HERE
+          [Query.equal("userId", session.userId), Query.limit(1)]
         );
 
       if (userProfileResponse.documents.length === 0) {
@@ -162,16 +147,16 @@ export default function LoginPage({
           "LoginPage: User profile document not found after login for ID:",
           session.userId
         );
-        await account.deleteSession("current"); // Log out from Appwrite if profile is missing
+        await account.deleteSession("current");
         const msg = "User profile not found. Please contact support.";
         setErrorMessage(msg);
         onLoginError?.(msg);
         return;
       }
 
-      const profileData = userProfileResponse.documents[0]; // Get the found profile document
+      const profileData = userProfileResponse.documents[0];
       const userRole = profileData.role;
-      const firmId = profileData.firmId; // Get firmId from the profile
+      const firmId = profileData.firmId;
 
       console.log(
         "LoginPage: Fetched Profile Role:",
@@ -180,26 +165,25 @@ export default function LoginPage({
         firmId
       );
 
-      onLoginSuccess?.(userRole, firmId); // Notify parent login successful
+      onLoginSuccess?.(userRole, firmId);
 
-      // 3. Determine and perform redirection based on role
-      let redirectPath = "/dashboard"; // Default generic dashboard
+      let redirectPath = "/dashboard";
       switch (userRole) {
         case "super_admin":
           redirectPath = "/dashboard/super-admin";
           break;
         case "firm_admin":
-          redirectPath = "/dashboard/firm-admin"; // Location management for firm admins
+          redirectPath = "/dashboard/firm-admin";
           break;
         default:
-          redirectPath = "/dashboard"; // For other roles like 'employee'
+          redirectPath = "/dashboard";
           break;
       }
 
       if (onRedirect) {
         onRedirect(redirectPath);
       } else {
-        window.location.href = redirectPath; // Fallback redirect
+        window.location.href = redirectPath;
       }
     } catch (err: any) {
       console.error(
@@ -207,42 +191,34 @@ export default function LoginPage({
         err
       );
       let userFacingError = "Login failed. Please check your credentials.";
-      // Appwrite specific error handling for createEmailPasswordSession
       if (
         err.code === 400 &&
         err.message.includes(
           "Creation of a session is prohibited when a session is active"
         )
       ) {
-        // This specific error means user tried to login while already logged in.
-        // It's handled by useEffect, but might occur in race conditions.
-        // We'll treat it as a generic error here, but the useEffect should prevent it.
         userFacingError = "You are already logged in. Redirecting...";
         console.warn(
           "LoginPage: Attempted login while session active. Re-triggering session check."
         );
-        checkActiveSession(); // Re-trigger the session check and redirect if session is truly active
+        checkActiveSession(); // Re-trigger the session check and redirect
       } else if (err.code === 401) {
-        // Unauthorized
         userFacingError = "Invalid email or password.";
       } else if (err.code === 429) {
-        // Rate Limit
         userFacingError = "Too many login attempts. Please try again later.";
       } else if (err.message.includes("Network request failed")) {
-        // Common network errors
         userFacingError =
           "Network error. Please check your internet connection.";
       } else {
-        userFacingError = err.message || "An unexpected error occurred."; // Fallback to raw message
+        userFacingError = err.message || "An unexpected error occurred.";
       }
       setErrorMessage(userFacingError);
       onLoginError?.(userFacingError);
     } finally {
-      setIsLoading(false); // Stop loading, show the form (or remain hidden if redirect happens)
+      setIsLoading(false);
     }
   };
 
-  // If isLoading is true, show a loading spinner instead of the form
   if (isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 font-sans">
@@ -252,10 +228,8 @@ export default function LoginPage({
     );
   }
 
-  // Render the login form once isLoading is false (meaning session check is done)
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex flex-col font-sans">
-      {/* ... rest of your JSX (login form etc.) ... */}
       <div className="flex-1 flex items-center justify-center px-4 py-8 sm:px-6 lg:px-16 xl:px-24 lg:pt-20 lg:pb-12">
         <div className="w-full max-w-screen-xl grid grid-cols-1 lg:grid-cols-2 gap-y-16 lg:gap-x-24">
           <div className="flex justify-center lg:justify-start">
