@@ -195,10 +195,10 @@ export default function LoginPage({
       let redirectPath = "/dashboard";
       switch (userRole) {
         case "super_admin":
-          redirectPath = "/super-admin/firm-management";
+          redirectPath = "dashboard/super-admin";
           break;
         case "firm_admin":
-          redirectPath = "/locations";
+          redirectPath = "dashboard/firm-admin";
           break;
         default:
           redirectPath = "/dashboard";
