@@ -3,8 +3,10 @@
 import HomeLayout from "@/layouts/HomeLayout.astro";
 
 import "../components/management/firm-management.css";
-import NavbarSuperAdmin from "@/components/Navbar-SuperAdmin.astro";
+
 import Header from "@/components/Header.astro";
+import LocationManagement from "@/components/management/LocationManagement";
+import Navbar from "@/components/Navbar.astro";
 // Forces this page to be server-rendered at runtime.
 export const prerender = false;
 ---
@@ -14,7 +16,7 @@ export const prerender = false;
     <!-- crancy Admin Menu -->
     <div class="crancy-smenu" id="CrancyMenu">
       <!-- Admin Menu -->
-      <NavbarSuperAdmin />
+      <Navbar />
       <!-- End Admin Menu -->
     </div>
     <!-- End crancy Admin Menu -->
@@ -26,7 +28,9 @@ export const prerender = false;
     <!-- crancy Dashboard -->
 
     <section class="crancy-adashboard crancy-show">
-      <main></main>
+      <main>
+        <LocationManagement client:only />
+      </main>
     </section>
 
     <!-- End crancy Dashboard -->
