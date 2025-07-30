@@ -12444,3 +12444,135 @@ div.ck.ck-editor__main .ck-content p {
 /*======================================
 	End Utilities CSS
 ========================================*/
+
+.dashboard-card {
+  /* Inherits from .crancy-ecom-card.crancy-ecom-card__v2 */
+  position: relative; /* Needed for absolute positioning of the icon */
+  overflow: hidden; /* Ensure icon doesn't overflow rounded corners */
+  display: flex; /* Make it a flex container for header-content alignment */
+  flex-direction: column; /* Stack header and content vertically */
+  justify-content: space-between; /* Space out header and content */
+  min-height: 150px; /* Ensure a consistent minimum height for cards */
+  padding: 1.5rem; /* Consistent internal padding */
+}
+
+/* Adjustments for existing .crancy-ecom-card__heading */
+.dashboard-card .crancy-ecom-card__heading {
+  display: flex;
+  justify-content: space-between; /* Space title and icon */
+  align-items: center; /* Vertically align them */
+  width: 100%;
+  margin-bottom: 0.5rem; /* Space between heading and content */
+}
+
+/* Adjustments for existing .crancy-ecom-card__title */
+.dashboard-card .crancy-ecom-card__title {
+  font-size: 1.25rem; /* Slightly smaller for card titles */
+  font-weight: 600;
+  color: var(--text-dark);
+  margin: 0; /* Remove default margin */
+}
+
+/* Adjustments for existing .crancy-ecom-card__content */
+.dashboard-card .crancy-ecom-card__content {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end; /* Align amount to bottom, icon to right */
+  width: 100%;
+  flex-grow: 1; /* Allows content to take remaining height */
+  padding: 0; /* Remove default padding as it's on the main card */
+}
+
+/* Adjustments for existing .crancy-ecom-card__amount */
+.dashboard-card .crancy-ecom-card__amount {
+  font-size: 2.5rem; /* Large, bold number */
+  font-weight: 700;
+  color: var(--brand-dark-blue); /* Primary color for numbers */
+  line-height: 1; /* Compact line height */
+  margin: 0; /* Remove default margin */
+}
+.dashboard-card .crancy-ecom-card__camount__inside {
+  margin: 0;
+}
+
+/* NEW: Icon on the right side of the card */
+.dashboard-card-right-icon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 50px; /* Fixed size for the icon container */
+  height: 50px;
+  border-radius: 100%; /* Circular background */
+  flex-shrink: 0; /* Prevent it from shrinking */
+  background-color: var(--background-light); /* Light background by default */
+}
+
+.dashboard-card-right-icon .dashboard-icon {
+  width: 40px; /* Size of the Lucide icon */
+  height: 40px;
+  stroke-width: 2; /* Thicker stroke for prominence */
+}
+
+/* Specific colors for icons */
+.dashboard-card-right-icon--blue .dashboard-icon {
+  color: var(--brand-orange); /* Primary dark blue */
+}
+.dashboard-card-right-icon--orange .dashboard-icon {
+  color: #fe5f15; /* Accent orange */
+}
+.dashboard-card-right-icon--green .dashboard-icon {
+  color: #22c55e; /* Green for success/positive count */
+}
+
+/* Loading/Error state for individual cards */
+.dashboard-card-loading,
+.dashboard-card-error {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  min-height: 150px; /* Match card height */
+  color: var(--text-medium);
+}
+.dashboard-card-loading .loading-spinner {
+  width: 2.5rem;
+  height: 2.5rem;
+  color: var(--brand-dark-blue);
+  margin-bottom: 0.5rem;
+}
+.dashboard-card-loading .loading-text {
+  font-size: 1rem;
+  font-weight: 500;
+}
+.dashboard-card-error .error-icon {
+  width: 2.5rem;
+  height: 2.5rem;
+  color: var(--red-destructive);
+  margin-bottom: 0.5rem;
+}
+.dashboard-card-error .error-message {
+  font-size: 1rem;
+  color: var(--red-destructive);
+  font-weight: 500;
+}
+
+/* General section title/text for dashboard pages */
+.crancy-section__title {
+  font-size: 2rem; /* h2 equivalent */
+  font-weight: 700;
+  color: var(--text-dark);
+  margin-bottom: 0.5rem;
+}
+.crancy-section__text {
+  font-size: 1.125rem;
+  color: var(--text-medium);
+  margin-bottom: 1.5rem;
+}
+
+/* Adjustments for overall page layout, if needed outside FirmManagementTable/cards */
+.crancy-adashboard main {
+  padding: 2rem; /* Add padding to the main content area */
+  max-width: 1300px; /* Match container width for consistency */
+  margin: 0 auto; /* Center the main content area */
+}

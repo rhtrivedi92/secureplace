@@ -56,6 +56,23 @@
   transition: all 0.25s ease-in-out;
 }
 
+.custom-button {
+  /* Or .shadcn-button */
+  padding: 0.75rem 1.25rem;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.25s ease-in-out;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  font-size: 0.9375rem;
+  line-height: 1.5;
+  text-decoration: none;
+}
+
 /* New Button Variants using Brand Colors */
 .button--primary {
   /* For Add New Firm, Save, Create */
@@ -124,12 +141,6 @@
   border-radius: 4px;
 }
 
-/* Specific button overrides */
-.add-firm-button {
-  /* This class is already combined with .crancy-btn, .button--primary, .button--large */
-  /* No specific styles here unless overriding the base/variant/size */
-}
-
 .action-button {
   margin-left: 0.6rem;
 }
@@ -171,7 +182,7 @@
 }
 
 /* --- Card Overrides --- */
-/* Your style.css already defines .crancy-card */
+
 .crancy-card.firm-list-card {
   /* More specific selector */
   background-color: #fff;
@@ -250,11 +261,6 @@
   text-align: right;
 }
 
-.crancy-table-body.firm-table-body {
-  /* More specific selector for tbody */
-  /* No specific styles needed here, as rows/cells handle it */
-}
-
 .firm-table-row {
   /* New class on TableRow */
   border-bottom: 1px solid var(--border-light);
@@ -305,9 +311,7 @@
   border-top: 1px solid var(--border-light);
   border-radius: 0 0 12px 12px;
 }
-.pagination-button {
-  /* Uses .crancy-btn and .button--outline base */
-}
+
 .pagination-info {
   font-size: 0.9375rem;
   color: var(--text-light);
@@ -315,8 +319,18 @@
 }
 
 /* --- Dialog Styles (Shadcn UI structure) --- */
+
+.dialog-overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.4);
+  z-index: 5001;
+  animation: fadeIn 0.2s ease-out;
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+}
+
 .dialog-content {
-  /* Applied to Shadcn DialogContent */
   position: fixed;
   top: 50%;
   left: 50%;
@@ -327,7 +341,7 @@
   padding: 2rem;
   width: 90%;
   max-width: 550px;
-  z-index: 1001;
+  z-index: 5002;
   max-height: 90vh;
   overflow-y: auto;
   animation: slideInFromTop 0.3s ease-out;
@@ -337,7 +351,6 @@
 }
 
 .dialog-header {
-  /* Applied to Shadcn DialogHeader */
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
@@ -346,20 +359,17 @@
 }
 
 .dialog-text-content {
-  /* New class */
   flex-grow: 1;
   padding-right: 2.5rem;
 }
 
 .dialog-title-text {
-  /* Applied to Shadcn DialogTitle */
   font-size: 1.75rem;
   font-weight: 700;
   color: var(--text-dark);
   margin-bottom: 0.5rem;
 }
 .dialog-description-text {
-  /* Applied to Shadcn DialogDescription */
   font-size: 0.9375rem;
   color: var(--text-light);
 }
@@ -412,8 +422,28 @@
 }
 
 .form-input {
-  /* Applied to crancy-input */
-  /* Inherits from crancy-input base */
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  font-size: 1rem;
+  color: var(--text-medium);
+  box-sizing: border-box;
+  transition: all 0.2s ease-in-out;
+}
+.form-input:focus {
+  outline: none;
+  border-color: var(--brand-dark-blue);
+  box-shadow: 0 0 0 3px rgba(0, 29, 73, 0.15); /* Primary color focus ring */
+}
+
+.dialog-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border-light);
 }
 
 .dialog-footer {
@@ -496,9 +526,7 @@
   color: var(--red-destructive);
   margin-bottom: 1rem;
 }
-.retry-button {
-  /* Uses .crancy-btn and .button--primary */
-}
+
 .retry-button .icon {
   margin-right: 0.5rem;
 }
@@ -616,4 +644,416 @@
   color: var(--text-light);
   text-align: center;
   margin-top: 0.5rem;
+}
+
+.dashboard-chart-card {
+  background-color: #fff;
+  border: 1px solid var(--border-light);
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.06);
+  padding: 1.5rem;
+  position: relative; /* IMPORTANT: Provides positioning context for absolute children */
+  min-height: 200px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; /* Distribute space vertically */
+}
+
+.dashboard-chart-card .charts-main__heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--background-light);
+}
+
+.dashboard-chart-icon-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 100%;
+  background-color: var(--background-light);
+  flex-shrink: 0;
+}
+.dashboard-chart-icon-wrapper .dashboard-icon {
+  width: 24px;
+  height: 24px;
+  stroke-width: 2;
+}
+
+.dashboard-chart-icon-wrapper--orange .dashboard-icon {
+  color: var(--brand-orange);
+}
+.dashboard-chart-icon-wrapper--blue .dashboard-icon {
+  color: var(--brand-dark-blue);
+}
+.dashboard-chart-icon-wrapper--green .dashboard-icon {
+  color: var(--positive-green);
+}
+
+.dashboard-chart-circle,
+.dashboard-chart-donut {
+  width: 220px;
+  height: 220px;
+  margin: 1.5rem auto 0;
+  position: relative;
+}
+
+.CircularProgressbar-text {
+  font-size: 24px !important;
+  font-weight: 700 !important;
+  fill: var(--text-dark) !important;
+}
+
+.dashboard-chart-labels {
+  max-width: 200px; /* Limit max width for a compact legend */
+
+  font-size: 1rem;
+  color: var(--text-medium);
+}
+
+.dashboard-chart-label {
+  gap: 0.5rem; /* Sufficient space between dot and text */
+
+  font-weight: 500;
+  white-space: nowrap; /* Keep text on one line */
+  text-align: left;
+  width: 100%; /* Ensure label takes full width of its parent (.dashboard-chart-labels) */
+  box-sizing: border-box;
+  overflow: hidden; /* Prevent any accidental text overflow */
+}
+
+.dashboard-chart-label--dot::before {
+  content: "";
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  margin-top: 2px; /* Nudge dot down slightly for vertical alignment */
+}
+
+.dashboard-chart-label--orange::before {
+  background-color: var(--brand-orange);
+}
+.dashboard-chart-label--blue::before {
+  background-color: var(--brand-dark-blue);
+}
+.dashboard-chart-label--path {
+  color: var(--brand-orange);
+}
+.dashboard-chart-label--trail {
+  color: var(--text-light);
+}
+
+.dashboard-bar-chart-card {
+  background-color: #fff;
+  border: 1px solid var(--border-light);
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.06);
+  padding: 1.5rem; /* Consistent padding */
+  min-height: 400px; /* Minimum height for the chart to be visible */
+  display: flex;
+  flex-direction: column;
+}
+
+.dashboard-bar-chart-card .charts-main__heading {
+  /* Inherits from existing heading styles, ensuring title and icon alignment */
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--background-light);
+}
+
+.dashboard-chart-canvas-wrapper {
+  flex-grow: 1; /* Allows the chart to take up available space */
+  position: relative; /* For Chart.js internal scaling */
+  min-height: 300px; /* Minimum height for the canvas itself */
+}
+
+/* ... (previous existing styles for other sections) ... */
+
+.alert-log-table-card {
+  /* Main container for the alert log table */
+  background-color: #fff;
+  border: 1px solid var(--border-light);
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.06);
+  padding: 1.5rem; /* Consistent padding */
+  margin-top: 1.5rem; /* Space from section title */
+}
+
+/* Table heading with filters and reset */
+.crancy-table__heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap; /* Allow wrapping on smaller screens */
+  gap: 1rem; /* Gap between filter elements */
+}
+
+.crancy-table__heading .charts-main__title {
+  /* Ensure title styles correctly */
+  flex-shrink: 0; /* Prevent title from shrinking */
+  font-size: 1.5rem; /* Consistent heading size */
+  font-weight: 600;
+  color: var(--text-dark);
+}
+
+/* Inline filters (selects and reset button) */
+.crancy-customer-filter--inline {
+  display: flex;
+  gap: 0.75rem; /* Space between filter selects and button */
+  align-items: center;
+  flex-wrap: wrap; /* Allow filters to wrap */
+}
+
+.crancy-customer-filter--inline .filter-select {
+  min-width: 120px; /* Minimum width for select boxes */
+  padding: 0.5rem 1rem; /* Smaller padding for filters */
+  height: auto; /* Allow height to adjust */
+  font-size: 0.9rem;
+  border: 1px solid var(--border-light); /* Ensure border */
+  border-radius: 6px; /* Consistent border radius */
+  background-color: var(--background-light); /* Light background */
+  color: var(--text-medium);
+  transition: all 0.2s ease-in-out;
+}
+.crancy-customer-filter--inline .filter-select:focus {
+  outline: none;
+  border-color: var(--brand-dark-blue);
+  box-shadow: 0 0 0 3px rgba(0, 29, 73, 0.15);
+}
+
+/* Reset Filters Button */
+.crancy-btn.button--outline .icon {
+  margin-right: 0.25rem; /* Small gap between icon and text */
+}
+
+/* --- Table Styling for Emergency Alert Log --- */
+.table-responsive {
+  overflow-x: auto; /* Ensures horizontal scrolling on small screens */
+  border-radius: 8px; /* Rounded corners for the table wrapper */
+  border: 1px solid var(--border-light); /* CRITICAL: Adds the outer border to the table container */
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03); /* Subtle shadow for the table itself */
+}
+
+.alert-log-table.crancy-table {
+  width: 100%;
+  border-collapse: collapse; /* Removes default cell spacing */
+  /* No outer border here, handled by .table-responsive */
+}
+
+/* Table Header Styles */
+.alert-log-table .crancy-table-header {
+  background-color: var(--background-light); /* Light background for header */
+}
+
+.alert-log-table .crancy-table-head-cell {
+  font-size: 0.85rem; /* Text size for headers */
+  padding: 0.8rem 1rem; /* Padding for headers */
+  color: var(--text-light); /* Muted text color */
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  text-align: left; /* Default left alignment */
+  border-bottom: 1px solid var(--border-light); /* Separator between header and body */
+  border-right: 1px solid var(--border-light); /* Vertical separator */
+  white-space: nowrap; /* Prevent headers from wrapping */
+}
+.alert-log-table .crancy-table-head-cell:last-child {
+  border-right: none; /* No right border on last header */
+}
+.alert-log-table .table-head-cell--actions {
+  text-align: center; /* Center for action column header */
+}
+
+/* Table Body Styles */
+.alert-log-table .crancy-table-body {
+  /* No specific background or border, relies on row/cell */
+}
+
+.alert-log-table .firm-table-row {
+  /* Row styling */
+  border-bottom: 1px solid var(--border-light); /* Separator between rows */
+  transition: background-color 0.2s ease-in-out;
+}
+.alert-log-table .firm-table-row:last-child {
+  border-bottom: none; /* No bottom border for last row */
+}
+.alert-log-table .firm-table-row:hover {
+  background-color: #fdfefe; /* Subtle hover effect */
+}
+
+.alert-log-table .crancy-table-cell {
+  /* Cell styling */
+  font-size: 0.9rem;
+  padding: 0.8rem 1rem; /* Padding for cells */
+  color: var(--text-medium);
+  vertical-align: middle; /* Center content vertically */
+  border-right: 1px solid var(--background-light); /* Light vertical separator */
+  white-space: nowrap; /* Keep content on one line */
+}
+.alert-log-table .crancy-table-cell:last-child {
+  border-right: none; /* No right border on last cell */
+}
+.alert-log-table .table-cell--name {
+  font-weight: 600;
+  color: var(--text-dark); /* Darker for names */
+}
+.alert-log-table .table-cell--actions {
+  text-align: center; /* Center action buttons */
+}
+.alert-log-table .empty-results-message {
+  /* Style for no results row */
+  text-align: center;
+  padding: 1.5rem;
+  color: var(--text-light);
+  font-size: 1rem;
+  font-style: italic;
+}
+
+/* View Button (Eye icon) */
+.alert-log-table .action-button.view-button {
+  background: transparent;
+  border: none;
+  color: var(--text-medium);
+  padding: 0.25rem;
+  border-radius: 4px;
+}
+.alert-log-table .action-button.view-button:hover {
+  color: var(--brand-dark-blue);
+  background-color: var(--background-light);
+}
+.alert-log-table .action-button.view-button .icon {
+  width: 1.25rem; /* Larger icon for view */
+  height: 1.25rem;
+}
+
+/* --- Pagination Bottom Controls (Re-evaluated for screenshot match) --- */
+.crancy-table-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 1.5rem;
+  flex-wrap: wrap; /* Allow wrapping for responsiveness */
+  gap: 1rem; /* Space between pagination elements */
+  padding: 0.75rem 1rem; /* Padding for the bottom bar */
+  background-color: #fff; /* White background */
+  border-top: 1px solid var(--border-light); /* Top border */
+  border-radius: 0 0 12px 12px; /* Rounded bottom corners */
+}
+
+/* "Showing X of Y" control */
+.dataTables_length {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+  color: var(--text-medium);
+}
+.dataTables_length .crancy-label {
+  margin-bottom: 0;
+  font-weight: normal;
+  color: var(--text-medium);
+}
+.dataTables_length .crancy-input {
+  /* Select for items per page */
+  width: 70px;
+  padding: 0.5rem;
+  height: auto;
+  font-size: 0.9rem;
+  border: 1px solid var(--border-light);
+  border-radius: 6px;
+  background-color: var(--background-light);
+  color: var(--text-dark);
+  text-align: center;
+  appearance: none; /* Hide default arrow */
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23343a40' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3e%3c/svg%3e"); /* Custom arrow */
+  background-repeat: no-repeat;
+  background-position: right 0.5rem center;
+  background-size: 0.75rem 0.75rem;
+}
+.dataTables_length .crancy-input:focus {
+  outline: none;
+  border-color: var(--brand-dark-blue);
+  box-shadow: 0 0 0 2px rgba(0, 29, 73, 0.1);
+}
+.crancy-label-text {
+  font-weight: 500;
+  color: var(--text-dark);
+}
+
+/* Pagination buttons (Prev/Next/Page Numbers) */
+.crancy-pagination {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.crancy-pagination ul {
+  display: flex;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  gap: 0.25rem; /* Tighter gap between page buttons */
+}
+.crancy-pagination ul li {
+  display: flex;
+}
+
+.crancy-pagination .pagination-first-last,
+.crancy-pagination .pagination-prev-next,
+.crancy-pagination .pagination-current-page {
+  /* Apply base styling to all buttons */
+  padding: 0.5rem;
+  min-width: 30px;
+  height: 30px;
+  border-radius: 4px;
+  color: var(--text-medium);
+  background-color: transparent; /* Default transparent */
+  border: 1px solid transparent; /* Default transparent border */
+  transition: all 0.2s ease;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.crancy-pagination .pagination-first-last:hover:not(.active):not(:disabled),
+.crancy-pagination .pagination-prev-next:hover:not(.active):not(:disabled),
+.crancy-pagination .pagination-current-page:hover:not(.active):not(:disabled) {
+  background-color: var(--background-light); /* Hover background */
+  color: var(--brand-dark-blue); /* Hover text color */
+}
+
+.crancy-pagination .pagination-first-last .icon,
+.crancy-pagination .pagination-prev-next .icon {
+  width: 1rem;
+  height: 1rem;
+}
+
+/* Active Page Number */
+.crancy-pagination .pagination-current-page.active {
+  background-color: var(--brand-dark-blue); /* Active page background */
+  color: #fff; /* Active page text color */
+  font-weight: 600;
+  border-color: var(--brand-dark-blue); /* Active page border */
+}
+
+.crancy-pagination .pagination-first-last:disabled,
+.crancy-pagination .pagination-prev-next:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background-color: transparent;
+  border-color: transparent;
+}
+
+.pagination-info-pages {
+  /* Text "of 25 pages" */
+  font-size: 0.9rem;
+  color: var(--text-dark);
+  margin-left: 0.5rem;
 }

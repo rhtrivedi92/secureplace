@@ -1,0 +1,25 @@
+---
+// src/pages/employees.astro
+import HomeLayout from "@/layouts/HomeLayout.astro";
+import EmployeeManagementTable from "@/components/management/EmployeeManagementTable.tsx";
+import "../../components/management/firm-management.css";
+import "../../components/management/employee-management.css";
+import Header from "@/components/Header.astro";
+import Navbar from "@/components/Navbar.astro";
+---
+
+<HomeLayout title="Employee Management - Secure Place">
+  <div class="crancy-body-area">
+    <div class="crancy-smenu" id="CrancyMenu">
+      <Navbar />
+      {/* This should be the Navbar specific to Firm Admins */}
+    </div>
+    <Header />
+    <section class="crancy-adashboard crancy-show">
+      <main>
+        <EmployeeManagementTable client:load />
+        {/* client:load is essential */}
+      </main>
+    </section>
+  </div>
+</HomeLayout>

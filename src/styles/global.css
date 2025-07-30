@@ -74,6 +74,17 @@
   --sidebar-accent-foreground: oklch(0.205 0 0);
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
+  --brand-dark-blue: #001d49;
+  --brand-orange: #ff5f15;
+  --text-dark: #1a202c;
+  --text-medium: #4a5568;
+  --text-light: #718096;
+  --border-light: #edf2f7;
+  --background-light: #f7fafc;
+  --red-destructive: #e53e3e;
+  --red-destructive-hover: #c53030;
+  --red-destructive-disabled: #fab5b5;
+  --positive-green: #22c55e;
 }
 
 .dark {

@@ -611,13 +611,6 @@ export default function LocationManagement({}: LocationManagementProps) {
                   : "Enter details for a new location. Click on the map to set coordinates."}
               </DialogDescription>
             </div>
-            <button
-              onClick={() => setIsDialogOpen(false)}
-              className="dialog-close-button"
-              aria-label="Close"
-            >
-              X
-            </button>
           </DialogHeader>
           <form onSubmit={handleSaveLocation} className="dialog-form">
             <div className="form-group">

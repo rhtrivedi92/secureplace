@@ -1,0 +1,103 @@
+/* --- New Employee Form Specific Styles --- */
+.form-group--checkbox {
+  display: flex;
+  grid-template-columns: auto 1fr; /* Label then checkbox */
+  align-items: center;
+  gap: 1rem;
+}
+.form-group--checkbox .form-label {
+  text-align: left; /* Align label to left for checkboxes */
+  margin-bottom: 0; /* No bottom margin for inline labels */
+}
+.form-checkbox {
+  /* Style for the checkbox input itself */
+  width: 20px; /* Custom size for checkbox */
+  height: 20px;
+  border: 1px solid #a0aec0;
+  border-radius: 4px;
+  appearance: none; /* Hide default checkbox */
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  cursor: pointer;
+  position: relative;
+  flex-shrink: 0; /* Prevent it from shrinking */
+  transition: background-color 0.2s, border-color 0.2s;
+}
+.form-checkbox:checked {
+  background-color: var(--brand-dark-blue);
+  border-color: var(--brand-dark-blue);
+}
+.form-checkbox:checked::before {
+  /* Checkmark for custom checkbox */
+  content: "\2713"; /* Unicode checkmark */
+  display: block;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 14px;
+  color: #fff;
+}
+.form-checkbox:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(0, 29, 73, 0.15); /* Focus ring */
+}
+
+/* --- Table Cell Icon Adjustments --- */
+/* For icons directly inside table cells for details like phone, blood group */
+.table-cell .icon--small {
+  width: 1rem;
+  height: 1rem;
+  color: var(--text-light); /* Muted color for detail icons */
+}
+.icon--volunteer {
+  /* Specific color for volunteer icon */
+  color: #22c55e; /* Green color for volunteer */
+}
+
+/* Ensure consistent icon styling for specific contexts */
+.search-input-wrapper .search-icon {
+  /* Existing search icon styles */
+  color: var(--text-light); /* Muted color */
+}
+/* Ensure general .icon class is also defined for other contexts */
+.icon {
+  width: 1rem; /* Default icon size */
+  height: 1rem;
+  flex-shrink: 0;
+  stroke: currentColor;
+  fill: none;
+  transition: color 0.2s ease;
+}
+
+.dialog-overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.5); /* Slightly darker overlay */
+  z-index: 5001; /* CRITICAL FIX: Higher than header's z-index */
+  animation: fadeIn 0.2s ease-out;
+  backdrop-filter: blur(
+    2px
+  ); /* Optional: Adds a subtle blur behind the dialog */
+  -webkit-backdrop-filter: blur(2px); /* For Safari support */
+}
+
+.dialog-content {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+  padding: 2rem;
+  width: 90%;
+  max-width: 550px;
+  z-index: 5002; /* CRITICAL FIX: Higher than overlay for content */
+  max-height: 90vh; /* Prevent dialog from exceeding viewport height */
+  overflow-y: auto; /* Enable scrolling if content overflows */
+  animation: slideInFromTop 0.3s ease-out;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}

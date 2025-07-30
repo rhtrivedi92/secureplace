@@ -1,4 +1,5 @@
 ---
+import EmergencyAlertLogTable from "@/components/dashboard/EmergencyAlertLogTable";
 import Header from "@/components/Header.astro";
 import Navbar from "@/components/Navbar.astro";
 import HomeLayout from "@/layouts/HomeLayout.astro";
@@ -19,7 +20,24 @@ import HomeLayout from "@/layouts/HomeLayout.astro";
     <!-- End Header -->
 
     <!-- crancy Dashboard -->
+    <section class="crancy-adashboard crancy-show">
+      <main>
+        <h2 class="crancy-section__title">Emergency Alert Log</h2>
+        <p class="crancy-section__text">
+          View and filter all emergency alerts within your firm.
+        </p>
 
+        {/* The Emergency Alert Log Table */}
+        <div class="row crancy-gap-30">
+          {/* Wrap in row for layout consistency */}
+          <div class="col-12">
+            {/* Full width column */}
+            <EmergencyAlertLogTable client:load />
+            {/* client:load is essential */}
+          </div>
+        </div>
+      </main>
+    </section>
     <!-- End crancy Dashboard -->
   </div>
 </HomeLayout>
