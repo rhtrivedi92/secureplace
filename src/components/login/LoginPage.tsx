@@ -9,17 +9,18 @@ import { AppwriteException } from "appwrite"; // Import AppwriteException
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+
+import { Eye, EyeOff, Mail, Loader2 } from "lucide-react";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import "./loginpage.css";
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
-import { Eye, EyeOff, Mail, Loader2 } from "lucide-react";
-import { toast, ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-
+} from "../ui/card";
 // Interface for user profile data from Appwrite Database, extending Models.Document
 interface AppwriteProfile extends Models.Document {
   userId: string; // Appwrite User ID (matches Appwrite's current user $id)
@@ -115,10 +116,6 @@ export default function LoginPage({
       window.location.href = redirectPath; // Redirect to appropriate dashboard
       return; // Stop further execution
     } catch (err: any) {
-      // This catch block will execute if there is NO active session or if account.get() fails for any reason
-      // If it's an AppwriteException with code 401 and message "User (role: guests) missing scope (account)",
-      // it means no one is logged in, which is expected.
-      // For other errors, log them.
       if (
         err instanceof AppwriteException &&
         err.code === 401 &&
@@ -136,11 +133,10 @@ export default function LoginPage({
           "An error occurred during session check. Please try again."
         );
       }
-      // Do NOT set errorMessage here, just allow the login form to show if no redirect happened.
     } finally {
-      setIsLoading(false); // Stop loading, show the form if no redirect happened
+      setIsLoading(false);
     }
-  }, [databases, onRedirect]); // Add databases to dependencies for useCallback
+  }, [databases, onRedirect]);
 
   useEffect(() => {
     checkActiveSession();
@@ -148,11 +144,10 @@ export default function LoginPage({
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    setErrorMessage(null); // Clear previous errors
-    setIsLoading(true); // Indicate login submission is in progress
+    setErrorMessage(null);
+    setIsLoading(true);
 
     try {
-      // 1. Authenticate with Appwrite (create email/password session)
       const session = await account.createEmailPasswordSession(email, password);
 
       console.log(
@@ -228,7 +223,7 @@ export default function LoginPage({
           console.warn(
             "LoginPage: Attempted login while session active. Re-triggering session check."
           );
-          checkActiveSession(); // Re-trigger the session check and redirect if session is truly active
+          checkActiveSession();
         } else if (err.code === 401) {
           userFacingError = "Invalid email or password.";
         } else if (err.code === 429) {
@@ -259,163 +254,136 @@ export default function LoginPage({
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex flex-col font-sans">
-      <div className="flex-1 flex items-center justify-center px-4 py-8 sm:px-6 lg:px-16 xl:px-24 lg:pt-20 lg:pb-12">
-        <div className="w-full max-w-screen-xl grid grid-cols-1 lg:grid-cols-2 gap-y-16 lg:gap-x-24">
-          <div className="flex justify-center lg:justify-start">
-            <div className="flex flex-col text-center lg:text-left space-y-6">
-              <div className="relative w-28 h-28 sm:w-32 sm:h-32 flex-shrink-0">
-                <img
-                  src="/images/secure-place-logo.png"
-                  alt="Secure Place Logo"
-                  className="h-full w-full object-contain"
-                />
-              </div>
-              <div className="text-gray-800 text-left">
-                <h1 className="text-4xl sm:text-5xl font-extrabold leading-normal tracking-tight">
-                  Secure
-                  <br />
-                  Place To
-                  <br />
-                  Work
-                </h1>
-              </div>
-              <p className="mt-4 text-lg sm:text-xl font-medium text-gray-600 max-w-lg">
-                Ensuring safety, fostering peace of mind for your most valuable
-                assets.
-              </p>
-            </div>
-          </div>
-
-          <div className="w-full max-w-md mx-auto lg:mx-0 lg:justify-self-end">
-            <Card className="bg-white rounded-xl shadow-lg border border-gray-200 p-6 sm:p-8 transform transition-all duration-300 hover:shadow-xl">
-              <CardHeader className="text-center pb-6">
-                <CardTitle className="text-4xl font-extrabold text-[#0033A0] mb-2">
-                  Sign In
-                </CardTitle>
-                <CardDescription className="text-gray-600 text-lg">
-                  Welcome back! Please enter your credentials.
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <form onSubmit={handleLogin} className="space-y-6">
-                  {/* Email Input */}
-                  <div className="space-y-2">
-                    <Label
-                      htmlFor="email"
-                      className="text-gray-700 font-semibold text-base"
-                    >
-                      Email address*
-                    </Label>
-                    <div className="relative">
-                      <Input
-                        id="email"
-                        type="email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200"
-                        placeholder="your.email@company.com"
-                        required
-                        aria-label="Email address"
-                        autoComplete="email"
-                      />
-                      <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
-                    </div>
+    <div className="login-container">
+      <div className="login-content-area">
+        {" "}
+        {/* Central container for logo & form */}
+        {/* Left Section: Big Logo Only */}
+        <div className="login-branding-area">
+          <img
+            src="/images/secure-place-logo.png"
+            alt="Secure Place Logo"
+            className="login-large-logo"
+          />
+        </div>
+        {/* Right Section: Sign In Form */}
+        <div className="login-form-area">
+          <Card className="login-card">
+            <CardHeader className="login-card-header">
+              <CardTitle className="login-card-title">Sign In</CardTitle>
+              <CardDescription className="login-card-description">
+                Welcome back! Please enter your credentials.
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="login-card-content">
+              <form onSubmit={handleLogin} className="login-form">
+                {/* Email Input */}
+                <div className="form-group">
+                  <Label htmlFor="email" className="form-label">
+                    Email address*
+                  </Label>
+                  <div className="input-with-icon">
+                    <Input
+                      id="email"
+                      type="email"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      className="form-input"
+                      placeholder="your.email@company.com"
+                      required
+                      aria-label="Email address"
+                      autoComplete="email"
+                    />
+                    <Mail className="input-icon" />
                   </div>
+                </div>
 
-                  {/* Password Input */}
-                  <div className="space-y-2">
-                    <Label
-                      htmlFor="password"
-                      className="text-gray-700 font-semibold text-base"
-                    >
-                      Password*
-                    </Label>
-                    <div className="relative">
-                      <Input
-                        id="password"
-                        type={showPassword ? "text" : "password"}
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        className="w-full pl-10 pr-10 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200"
-                        placeholder="••••••••"
-                        required
-                        aria-label="Password"
-                        autoComplete="current-password"
-                      />
-                      <Button
-                        type="button"
-                        variant="ghost"
-                        size="sm"
-                        className="absolute right-2 top-1/2 transform -translate-y-1/2 h-auto p-1 text-gray-500 hover:text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 rounded-md"
-                        onClick={togglePasswordVisibility}
-                        aria-label={
-                          showPassword ? "Hide password" : "Show password"
-                        }
-                      >
-                        {showPassword ? (
-                          <EyeOff className="w-5 h-5" />
-                        ) : (
-                          <Eye className="w-5 h-5" />
-                        )}
-                      </Button>
-                    </div>
-                  </div>
-
-                  {/* Error Message Display */}
-                  {errorMessage && (
-                    <div className="text-red-600 text-sm font-medium mt-2 animate-fadeIn">
-                      {errorMessage}
-                    </div>
-                  )}
-
-                  {/* Forgot Password Link */}
-                  <div className="text-right">
-                    <Button
-                      variant="link"
-                      className="text-blue-600 hover:text-blue-700 hover:underline p-0 h-auto font-normal"
-                      onClick={() =>
-                        alert(
-                          "Forgot password functionality will be implemented."
-                        )
+                {/* Password Input */}
+                <div className="form-group">
+                  <Label htmlFor="password" className="form-label">
+                    Password*
+                  </Label>
+                  <div className="input-with-icon">
+                    <Input
+                      id="password"
+                      type={showPassword ? "text" : "password"}
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                      className="form-input password-input"
+                      placeholder="••••••••"
+                      required
+                      aria-label="Password"
+                      autoComplete="current-password"
+                    />
+                    <button
+                      type="button"
+                      className="password-toggle-button"
+                      onClick={togglePasswordVisibility}
+                      aria-label={
+                        showPassword ? "Hide password" : "Show password"
                       }
                     >
-                      Forgot Password?
-                    </Button>
+                      {showPassword ? (
+                        <EyeOff className="icon" />
+                      ) : (
+                        <Eye className="icon" />
+                      )}
+                    </button>
                   </div>
+                </div>
 
-                  {/* Sign In Button */}
-                  <Button
-                    type="submit"
-                    className="w-full bg-[#0033A0] hover:bg-blue-800 text-white font-semibold py-3 px-4 rounded-lg transition-all duration-300 ease-in-out transform hover:scale-[1.01] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
-                    disabled={isLoading}
+                {/* Error Message Display */}
+                {errorMessage && (
+                  <div className="error-message-inline">{errorMessage}</div>
+                )}
+
+                {/* Forgot Password Link */}
+                <div className="form-link-right">
+                  <button
+                    type="button"
+                    className="forgot-password-link"
+                    onClick={() =>
+                      alert(
+                        "Forgot password functionality will be implemented."
+                      )
+                    }
                   >
-                    {isLoading ? (
-                      <>
-                        <Loader2 className="icon-spin mr-2" /> Signing In...
-                      </>
-                    ) : (
-                      "Sign In"
-                    )}
-                  </Button>
-                </form>
-              </CardContent>
-            </Card>
-          </div>
+                    Forgot Password?
+                  </button>
+                </div>
+
+                {/* Sign In Button */}
+                <Button
+                  type="submit"
+                  className="login-submit-button"
+                  disabled={isLoading}
+                >
+                  {isLoading ? (
+                    <>
+                      <Loader2 className="icon-spin icon--small" /> Signing
+                      In...
+                    </>
+                  ) : (
+                    "Sign In"
+                  )}
+                </Button>
+              </form>
+            </CardContent>
+          </Card>
         </div>
       </div>
 
       {/* Footer */}
-      <footer className="px-4 py-6 border-t border-gray-200 bg-white shadow-sm">
-        <div className="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center text-sm text-gray-500 space-y-3 sm:space-y-0">
-          <div className="text-center sm:text-left">
+      <footer className="login-footer">
+        <div className="login-footer-content">
+          <div className="login-footer-copyright">
             &copy; 2025 Secure Place. All rights reserved.
           </div>
-          <div className="flex items-center space-x-2">
-            <Mail className="w-4 h-4 text-gray-600" />
+          <div className="login-footer-contact">
+            <Mail className="login-footer-icon" />
             <a
               href="mailto:support@secureplace.com"
-              className="hover:underline text-gray-600"
+              className="login-footer-email-link"
             >
               support@secureplace.com
             </a>

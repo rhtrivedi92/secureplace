@@ -328,7 +328,6 @@ export default function EmergencyAlertLogTable({}: EmergencyAlertLogTableProps) 
   return (
     <div className="crancy-sidebar__single crancy-table-card alert-log-table-card">
       <div className="crancy-table__heading">
-        <h4 className="charts-main__title">Emergency Alert Log</h4>
         <div className="crancy-customer-filter--inline">
           <select
             className="crancy-input form-input filter-select"
